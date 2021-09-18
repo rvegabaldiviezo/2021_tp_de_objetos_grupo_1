@@ -1,0 +1,10 @@
+import example.*
+
+describe "group of tests" {
+
+	test "testX" {
+
+		assert.that(true)
+
+	}
+}
