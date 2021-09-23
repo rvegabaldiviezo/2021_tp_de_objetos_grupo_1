@@ -7,6 +7,6 @@ object wollok {
 
 object pruebaGit {
 	method hola() {
-		return "Hola" 
+		return "Hola Fram XD" 
 	}
 }
