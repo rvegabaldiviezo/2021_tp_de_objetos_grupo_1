@@ -1,5 +1,5 @@
 ## Trabajo Práctico - Objetos
-## Integrantes
+# Integrantes
  - Romagnoli, 	Franco Damián
  - Zalazar, Martina
  - Vega Baldiviezo, Ramón Ángel
