@@ -4,3 +4,9 @@ object wollok {
 		return 'I am Wolloktastic!'
 	}
 }
+
+object pruebaGit {
+	method hola() {
+		return "Hola" 
+	}
+}
