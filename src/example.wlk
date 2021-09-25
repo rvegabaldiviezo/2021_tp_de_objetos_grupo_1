@@ -1,72 +1,95 @@
 /** First Wollok example */
 
 object ciclope{
-	const nombre =  "Scott Summers"
-	const potencial = 30	
-	var habilidades = [explosionOptica]	  
-	var potencialAdquirido=0
+	const property nombre =  "Scott Summers"
+	const property potencial = 30	
+	const property habilidades = [explosionOptica]	  
+
+	method poderTotal()= potencial + habilidades.sum{habilidad=> habilidad.incrementoPotencial(potencial)}
+
+	method puedeAprender(habilidad)= habilidad.cumpleRequisitos(self.poderTotal())
 	
-	method poderTotal(){
-		potencialAdquirido = habilidades.sum{habilidad=> habilidad.incrementoPotencial(potencial)}
-		return potencial + potencialAdquirido
+	method tieneHabilidad(habilidad)=habilidades.contains(habilidad)
+	
+	method aprenderHabilidad(habilidad){
+		if(self.puedeAprender(habilidad) && not(self.tieneHabilidad(habilidad))){
+			habilidades.add(habilidad)
+		}
+	}
+}
+
+object fenix{
+	const property nombre= "Jean Gray"
+	const property potencial= 40
+	const property habilidades= [telepatia]
+	
+	method poderTotal()= potencial + habilidades.sum{habilidad=> habilidad.incrementoPotencial(potencial)}
+	
+	method puedeAprender(habilidad)= habilidad.cumpleRequisitos(self.poderTotal())
+	
+	method tieneHabilidad(habilidad)=habilidades.contains(habilidad)
+	
+	method aprenderHabilidad(habilidad){
+		if(self.puedeAprender(habilidad) && not(self.tieneHabilidad(habilidad))){
+			habilidades.add(habilidad)
+		}
+	}
+}
+
+object quicksilver{
+	const property nombre = "Pietro Maximoff"
+	const property potencial = 35
+	const property habilidades = [supervelocidad]
+	
+	method poderTotal()= potencial + habilidades.sum{habilidad=> habilidad.incrementoPotencial(potencial)}
+	
+	method puedeAprender(habilidad)= habilidad.cumpleRequisitos(self.poderTotal())
+	
+	method tieneHabilidad(habilidad)=habilidades.contains(habilidad)
+	
+	method aprenderHabilidad(habilidad){
+		if(self.puedeAprender(habilidad) && not(self.tieneHabilidad(habilidad))){
+			habilidades.add(habilidad)
+		}
+	}
+}
+
+object iceman {
+	const property nombre = "Bobby Drake"
+	const property potencial = 25
+	const property habilidades = [transformacion]
+	
+	method poderTotal()= potencial + habilidades.sum{habilidad=> habilidad.incrementoPotencial(potencial)}
+	
+	method puedeAprender(habilidad)= habilidad.cumpleRequisitos(self.poderTotal())
+	
+	method tieneHabilidad(habilidad)=habilidades.contains(habilidad)
+	
+	method aprenderHabilidad(habilidad){
+		if(self.puedeAprender(habilidad) && not(self.tieneHabilidad(habilidad))){
+			habilidades.add(habilidad)
+		}
 	}
 }
 
 object explosionOptica{
-	method incrementoPotencial(potencial) = 30
-}
-
-object fenix{
-	const nombre= "Jean Gray"
-	var potencial= 40
-	var habilidades= [telepatia]
-	var potencialAdquirido=0
-	
-	method poderTotal(){
-		potencialAdquirido = habilidades.sum{habilidad=> habilidad.incrementoPotencial(potencial)}
-		return potencial + potencialAdquirido
-	}
-	
+	method incrementoPotencial(potencial) = 30		
+	method cumpleRequisitos(poderTotal)= poderTotal.between(70, 115)
 }
 
 object telepatia{
-	method incrementoPotencial(potencial)= potencial*2
+	method incrementoPotencial(potencial)= potencial*2	
+	method cumpleRequisitos(poderTotal)=false
 }
 
-object quicksilver{
-	const nombre = "Pietro Maximoff"
-	var potencial = 35
-	var habilidades = [supervelocidad]
-	var potencialAdquirido=0
-	
-	method poderTotal(){
-		potencialAdquirido = habilidades.sum{habilidad=> habilidad.incrementoPotencial(potencial)}
-		return potencial + potencialAdquirido
-	}
-}
 object supervelocidad{
-	method incrementoPotencial(potencial){
-		if(potencial.even()){
-			return 20
-		}else{
-			return 25
-		}
-	}   		
-}
-
-object iceman {
-	const nombre = "Bobby Drake"
-	var potencial = 25
-	var habilidades = [transformacion]
-	var potencialAdquirido=0
+	method incrementoPotencial(potencial)=if(potencial.even()) 20 else 25
 	
-	method poderTotal(){
-		potencialAdquirido = habilidades.sum{habilidad=> habilidad.incrementoPotencial(potencial)}
-		return potencial + potencialAdquirido
-	}
+	method cumpleRequisitos(poderTotal)= poderTotal<=30		
 }
 
 object transformacion {
-	method incrementoPotencial(potencial)= (potencial.div(5))
+	method incrementoPotencial(potencial)= -(potencial.div(5))
+	method cumpleRequisitos(poderTotal)= 60<poderTotal
 }
 
