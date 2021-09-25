@@ -1,6 +1,6 @@
 import example.*
 
-describe "Puntos 1 y 2" {
+describe "Test para comprobacion de poder total base" {
 
 	test "El poder total de ciclope es 60" {
 		assert.equals(60, ciclope.poderTotal())
@@ -19,7 +19,7 @@ describe "Puntos 1 y 2" {
 	}
 }
 
-describe "Los estudiantes pueden aprender habilidades"{
+describe "Test para las habilidades que pueden aprender los estudiantes"{
 	test "iceman puede aprender supervelocidad" {
 		assert.that(iceman.puedeAprender(supervelocidad))
 	}
@@ -40,10 +40,10 @@ describe "Los estudiantes pueden aprender habilidades"{
 		assert.notThat(quicksilver.puedeAprender(telepatia))
 	}
 
-	test "Ciclope aprende aprende supervelocidad ni transformacion" {
+	test "Ciclope aprende aprende supervelocidad y transformacion" {
 		ciclope.aprenderHabilidad(supervelocidad)
 		ciclope.aprenderHabilidad(transformacion)
-		assert.notEquals([explosionOptica,supervelocidad,transformacion],ciclope.habilidades())
+		assert.equals([explosionOptica,supervelocidad,transformacion],ciclope.habilidades())
 	}
 
 	test "Fenix aprende transformacion y luego explosionOptica" {

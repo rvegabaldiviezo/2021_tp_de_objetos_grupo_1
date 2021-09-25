@@ -7,7 +7,7 @@ object ciclope{
 
 	method poderTotal()= potencial + habilidades.sum{habilidad=> habilidad.incrementoPotencial(potencial)}
 
-	method puedeAprender(habilidad)= habilidad.cumpleRequisitos(self.poderTotal())
+	method puedeAprender(habilidad)= habilidad.cumpleRequisitos(self)
 	
 	method tieneHabilidad(habilidad)=habilidades.contains(habilidad)
 	
@@ -25,7 +25,7 @@ object fenix{
 	
 	method poderTotal()= potencial + habilidades.sum{habilidad=> habilidad.incrementoPotencial(potencial)}
 	
-	method puedeAprender(habilidad)= habilidad.cumpleRequisitos(self.poderTotal())
+	method puedeAprender(habilidad)= habilidad.cumpleRequisitos(self)
 	
 	method tieneHabilidad(habilidad)=habilidades.contains(habilidad)
 	
@@ -43,7 +43,7 @@ object quicksilver{
 	
 	method poderTotal()= potencial + habilidades.sum{habilidad=> habilidad.incrementoPotencial(potencial)}
 	
-	method puedeAprender(habilidad)= habilidad.cumpleRequisitos(self.poderTotal())
+	method puedeAprender(habilidad)= habilidad.cumpleRequisitos(self)
 	
 	method tieneHabilidad(habilidad)=habilidades.contains(habilidad)
 	
@@ -61,7 +61,7 @@ object iceman {
 	
 	method poderTotal()= potencial + habilidades.sum{habilidad=> habilidad.incrementoPotencial(potencial)}
 	
-	method puedeAprender(habilidad)= habilidad.cumpleRequisitos(self.poderTotal())
+	method puedeAprender(habilidad)= habilidad.cumpleRequisitos(self)
 	
 	method tieneHabilidad(habilidad)=habilidades.contains(habilidad)
 	
@@ -74,22 +74,22 @@ object iceman {
 
 object explosionOptica{
 	method incrementoPotencial(potencial) = 30		
-	method cumpleRequisitos(poderTotal)= poderTotal.between(70, 115)
+	method cumpleRequisitos(mutante)= mutante.poderTotal().between(70, 115)
 }
 
 object telepatia{
 	method incrementoPotencial(potencial)= potencial*2	
-	method cumpleRequisitos(poderTotal)=false
+	method cumpleRequisitos(mutante)=false
 }
 
 object supervelocidad{
 	method incrementoPotencial(potencial)=if(potencial.even()) 20 else 25
 	
-	method cumpleRequisitos(poderTotal)= poderTotal<=30		
+	method cumpleRequisitos(mutante)= mutante.potencial()<=30		
 }
 
 object transformacion {
 	method incrementoPotencial(potencial)= -(potencial.div(5))
-	method cumpleRequisitos(poderTotal)= 60<poderTotal
+	method cumpleRequisitos(mutante)= 60<mutante.poderTotal()
 }
 
