@@ -1,10 +1,76 @@
 import example.*
 
-describe "group of tests" {
+describe "Puntos 1 y 2" {
 
-	test "testX" {
+	test "El poder total de ciclope es 60" {
+		assert.equals(60, ciclope.poderTotal())
+	}
 
-		assert.that(true)
+	test "El poder total de Fénix no es 80, es 120" {
+		assert.equals(120, fenix.poderTotal())
+	}
 
+	test "El poder total de iceman es 20" {
+		assert.equals(20, iceman.poderTotal())
+	}
+
+	test "El poder total de quicksilver es 60" {
+		assert.equals(60, quicksilver.poderTotal())
+	}
+}
+
+describe "Los estudiantes pueden aprender habilidades"{
+	test "iceman puede aprender supervelocidad" {
+		assert.that(iceman.puedeAprender(supervelocidad))
+	}
+
+	test "fenix no puede aprender supervelocidad" {
+		assert.notThat(fenix.puedeAprender(supervelocidad))
+	}
+
+	test "fenix no puede aprender explosion optica" {
+		assert.notThat(fenix.puedeAprender(explosionOptica))
+	}
+
+	test "ciclope no puede aprender transformacion" {
+		assert.notThat(ciclope.puedeAprender(transformacion))
+	}
+
+	test "Quicksilver no puede aprender telepatía porque no puede aprenderse" {
+		assert.notThat(quicksilver.puedeAprender(telepatia))
+	}
+
+	test "Ciclope aprende aprende supervelocidad ni transformacion" {
+		ciclope.aprenderHabilidad(supervelocidad)
+		ciclope.aprenderHabilidad(transformacion)
+		assert.notEquals([explosionOptica,supervelocidad,transformacion],ciclope.habilidades())
+	}
+
+	test "Fenix aprende transformacion y luego explosionOptica" {
+		fenix.aprenderHabilidad(transformacion)
+		fenix.aprenderHabilidad(explosionOptica)
+		assert.equals([telepatia,transformacion,explosionOptica],fenix.habilidades())
+	}
+
+	test "Iceman puede aprender Transformación y Supervelocidad" {
+		iceman.aprenderHabilidad(supervelocidad)
+		assert.equals([transformacion,supervelocidad],iceman.habilidades())
+	}
+
+	test "Ciclope no puede aprender Explosion optica" {
+		ciclope.aprenderHabilidad(explosionOptica)
+		assert.equals([explosionOptica],ciclope.habilidades())
+	}
+
+	test "Quicksilver no puede aprender telepatia" {
+		quicksilver.aprenderHabilidad(telepatia)
+		assert.equals([supervelocidad],quicksilver.habilidades())
+	}	
+	
+	test "Ningun mutante puede aprender telepatía"{
+		assert.notThat(quicksilver.puedeAprender(telepatia))
+		assert.notThat(ciclope.puedeAprender(telepatia))
+		assert.notThat(fenix.puedeAprender(telepatia))
+		assert.notThat(iceman.puedeAprender(telepatia))
 	}
 }
