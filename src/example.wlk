@@ -144,7 +144,7 @@ class Faccion{
 	 
 	method convieneAgregar(mutante){
 		return 	( mutante.habilidades().any({  	
-						habilidadMutante => (self.habilidadesFaccion().contains(habilidadMutante)) 
+						habilidadMutante => (not self.habilidadesFaccion().contains(habilidadMutante)) 
 							or 
 							( mutantes.any({ 
 								mutanteFac => mutanteFac.habilidades().any(
@@ -179,6 +179,8 @@ const iceman = new Mutante(nombre= "Bobby Drake", potencial = 25, habilidades = 
 const cable = new Mutante(nombre= "Nathan Summers", potencial=25, habilidades = [new Habilidad(nucleo = telequinesis, nivel = 10)])
 
 const domino = new Mutante(nombre="Neena Thurman" , potencial=25, habilidades = [new Habilidad(nucleo=suerte, nivel=13)])
+const domino2 = new Mutante(nombre="Neena Thurman" , potencial=25, habilidades = [new Habilidad(nucleo=suerte, nivel=14)])
+
 
 const sunspot = new Mutante(nombre="Roberto Da Costa" , potencial=25, habilidades = [new Habilidad(nucleo=absorcionSolar, nivel=8)])
 
@@ -186,9 +188,13 @@ const magneto = new Mutante(nombre="Erik Lenhsherr", potencial= 50 , habilidades
 
 const blob = new Mutante(nombre="Fred Dukes", potencial= 20 , habilidades= [new Habilidad( nucleo = inamovible, nivel = 6)])
 
+const borrar = new Mutante(nombre="Borrar", potencial= 20 , habilidades= [new Habilidad( nucleo = explosionOptica, nivel = 20), new Habilidad( nucleo = magnetismo, nivel = 20)])
 
-const xforce = new Faccion(mutantes=[cable,domino,sunspot])
+const xforce = new Faccion(mutantes=[cable,domino,sunspot,borrar]) // [ telequinesis(10), suerte(13), absorcionSolar(8)]
 
-const hermandad = new Faccion(mutantes = [magneto, blob, quicksilver])
+const hermandad = new Faccion(mutantes = [magneto, blob, quicksilver]) //[ magnetismo(14), inamovible(6), supervelocidad(9)]
 
-const xmen = new Faccion( mutantes = [fenix, iceman, sunspot, cable])
+const xmen = new Faccion( mutantes = [fenix, iceman, sunspot, cable]) // [ telepatia(13), transformacion(7), absorcionSolar(8), telequinesis(10)]
+
+
+
