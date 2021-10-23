@@ -110,7 +110,7 @@ object inamovible{
 }
 
 class Faccion{
-	const property mutantes= []
+	const property mutantes= [] 
 	var nombre= ""
 	var property habilidadesFaccion= #{}
 	
@@ -127,14 +127,46 @@ class Faccion{
 	
 	method integrantesEnComun(otraFaccion)= self.nombres().intersection(otraFaccion.nombres())
 	
+	/*
 	method convieneAgregar(mutante){
 		//agarro una habilidad de mi mutante y me fijo para cada elemento de la lista si cumple alguna de las 2 condiciones
 		return (mutante.habilidades().any({ habilidadMutante => self.habilidadesFaccion().
 				any({ 
 				habilidad => ((habilidad.nucleo()) != (habilidadMutante.nucleo())) or 
-				((habilidadMutante.nivel()) < (habilidad.nivel()))})}))
+				((habilidadMutante.nivel()) > (habilidad.nivel()))})}))
+				* 
+				* (self.habilidadesFaccion().contains(habilidadMutante)) 
+						or 
 	}
+	*/
+	 
+	 
+	 
+	method convieneAgregar(mutante){
+		return 	( mutante.habilidades().any({  	
+						habilidadMutante => (self.habilidadesFaccion().contains(habilidadMutante)) 
+							or 
+							( mutantes.any({ 
+								mutanteFac => mutanteFac.habilidades().any(
+								{ 	habilidadFac => (habilidadFac.nucleo() == habilidadMutante.nucleo()) 
+									and (habilidadFac.nivel() < habilidadMutante.nivel())
+									
+								})
+																	
+							 })
+							
+						   )
+					})
+				)
+
+	}
+
+
+
+
 }
+
+
 
 const ciclope = new Mutante(nombre= "Scott Summers", potencial = 30, habilidades = [new Habilidad(nucleo = explosionOptica, nivel= 11)])
 
