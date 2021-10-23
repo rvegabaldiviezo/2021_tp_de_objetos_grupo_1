@@ -3,7 +3,7 @@
 
 class Mutante{
 	const property nombre =""
-	const property potencial = 0
+	var property potencial = 0
 	const property habilidades = []  
 
 	method poderTotal()= potencial + habilidades.sum{habilidad=> habilidad.nucleo().incrementoPotencial(self)}
@@ -22,19 +22,20 @@ class Mutante{
 	
 	method entrenamientoBasico(horas)= potencial + horas
 	
-	
 	method entrenamientoCompleto(horas, aEntrenar){
-		if(aEntrenar.contains(self.nucleos())){
-			
-		}else{
-			
+		//var property = aEntrenar
+		self.entrenamientoBasico(horas)
+		const nucleos = self.nucleos()
+		if(aEntrenar.any({x => nucleos.contains(x)}))
+		{
+			habilidades.map{habilidad => if(aEntrenar.contains(habilidad.nucleo())) habilidad.nivel(habilidad.nivel()+2)}
 		}
 	}
 	
 }
 
 class Habilidad{
-	var property nucleo = ""
+	var property nucleo
 	var property nivel = 1
 }
 
@@ -127,10 +128,11 @@ class Faccion{
 	method integrantesEnComun(otraFaccion)= self.nombres().intersection(otraFaccion.nombres())
 	
 	method convieneAgregar(mutante){
-		return (mutante.habilidades().filter{ habilidadMutante => self.habilidadesFaccion().
-				filter{ 
-				habilidad => habilidad.nucleo() != habilidadMutante.nucleo() or 
-				habilidadMutante.nivel()>habilidad.nivel()}}).isEmpty()
+		//agarro una habilidad de mi mutante y me fijo para cada elemento de la lista si cumple alguna de las 2 condiciones
+		return (mutante.habilidades().any({ habilidadMutante => self.habilidadesFaccion().
+				any({ 
+				habilidad => ((habilidad.nucleo()) != (habilidadMutante.nucleo())) or 
+				((habilidadMutante.nivel()) < (habilidad.nivel()))})}))
 	}
 }
 
@@ -158,5 +160,3 @@ const xforce = new Faccion(mutantes=[cable,domino,sunspot])
 const hermandad = new Faccion(mutantes = [magneto, blob, quicksilver])
 
 const xmen = new Faccion( mutantes = [fenix, iceman, sunspot, cable])
-
-
