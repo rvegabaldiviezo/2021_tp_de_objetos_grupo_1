@@ -20,23 +20,14 @@ class Mutante{
 	
 	method nucleos()=habilidades.map{habilidad => habilidad.nucleo()}
 	
-	method entrenamientoBasico(horas)= potencial + horas
-	
-	method entrenamientoCompleto(horas, aEntrenar){
-		//var property = aEntrenar
-		self.entrenamientoBasico(horas)
-		const nucleos = self.nucleos()
-		if(aEntrenar.any({x => nucleos.contains(x)}))
-		{
-			habilidades.map{habilidad => if(aEntrenar.contains(habilidad.nucleo())) habilidad.nivel(habilidad.nivel()+2)}
-		}
-	}
-	
 }
+
 
 class Habilidad{
 	var property nucleo
 	var property nivel = 1
+	
+ 	override method ==(habilidad)= nucleo == habilidad.nucleo() 
 }
 
 object explosionOptica{
@@ -111,7 +102,6 @@ object inamovible{
 
 class Faccion{
 	const property mutantes= [] 
-	var nombre= ""
 	var property habilidadesFaccion= #{}
 	
 	method multiplicador()= self.nucleos().asSet().size().max(self.mutantes().size())
@@ -127,11 +117,11 @@ class Faccion{
 	
 	method integrantesEnComun(otraFaccion)= self.nombres().intersection(otraFaccion.nombres())
 	 
-	method contieneHabilidad(habilidad) = self.habilidadesFaccion().contains(habilidad)
+	method contieneHabilidad(habilidad) = self.habilidadesFaccion().any{ habilidadFaccion => habilidadFaccion == habilidad}
 
 	method puedeAgregarHabilidad(habilidad) = mutantes.any{ mutanteFaccion => 
 		mutanteFaccion.habilidades().any{ habilidadFaccion => 
-			habilidadFaccion.nucleo() == habilidad.nucleo() and habilidadFaccion.nivel() < habilidad.nivel()			
+			habilidadFaccion == habilidad and habilidadFaccion.nivel() < habilidad.nivel()			
 		}														
 	}	 
 
@@ -144,6 +134,9 @@ class Faccion{
 
 // Ejemplos me Mutantes
 const ciclope = new Mutante(nombre= "Scott Summers", potencial = 30, habilidades = [new Habilidad(nucleo = explosionOptica, nivel= 11)])
+
+const ciclope2 = new Mutante(nombre= "Scott Summers", potencial = 30, habilidades = [new Habilidad(nucleo = explosionOptica, nivel= 10)])
+
 
 const fenix = new Mutante(nombre= "Jean Gray", potencial = 40, habilidades = [ new Habilidad( nucleo = telepatia, nivel = 13)])
 
@@ -161,17 +154,113 @@ const magneto = new Mutante(nombre="Erik Lenhsherr", potencial= 50 , habilidades
 
 const blob = new Mutante(nombre="Fred Dukes", potencial= 20 , habilidades= [new Habilidad( nucleo = inamovible, nivel = 6)])
 
-const borrar = new Mutante(nombre="Borrar", potencial= 20 , habilidades= [new Habilidad( nucleo = explosionOptica, nivel = 20), new Habilidad( nucleo = magnetismo, nivel = 20)])
+const borrar = new Mutante(nombre="Borrar", potencial= 20 , habilidades= [new Habilidad( nucleo = telequinesis, nivel = 11)])
+-
 
 // Ejemplos de Facciones
-const xforce = new Faccion(mutantes=[cable,domino,sunspot,borrar]) // [ telequinesis(10), suerte(13), absorcionSolar(8)]
+const xforce = new Faccion(mutantes=[cable,domino,sunspot]) // [ telequinesis(10), suerte(13), absorcionSolar(8)]
 
 const hermandad = new Faccion(mutantes = [magneto, blob, quicksilver]) //[ magnetismo(14), inamovible(6), supervelocidad(9)]
 
 const xmen = new Faccion( mutantes = [fenix, iceman, sunspot, cable]) // [ telepatia(13), transformacion(7), absorcionSolar(8), telequinesis(10)]
 
+///////////////////////
+/*
+object entrenamientoBasico{
+	method entrenar(mutante, tiempo, habilidades, fraccion){ 
+		mutante.potencial(mutante.potencial + tiempo) 
+	}	
+}	
+	
+object entrenamientoCompleto{	
+	method entrenar(mutante, tiempo, habilidades, fraccion){
+		entrenamientoBasico.entrenar(mutante, tiempo, habilidades, fraccion)
+		if( habilidades.any{ habilidad => fraccion.contieneHabilidad(habilidad)})
+		{
+			habilidades.map{habilidad => if(aEntrenar.contains(habilidad.nucleo())) habilidad.nivel(habilidad.nivel()+2)}
+		}
+	}
+	
+}*/
+//  fraccion.contieneHabilidad(habilidad) = self.habilidadesFaccion().any{ habilidadFaccion => habilidadFaccion == habilidad}
+
+class Sesion  {
+	// Tipo de entrenammiento de la seaion (basico o completo)      
+	var property entrenamiento
+	// Habilidades q seran entrenadas
+	var property habilidades
+	// Tiempo q dura la sesion de entrenamiento 
+	const property tiempo
+
+	method entrenarMutante(mutante, tiempo, habilidades, faccion) {
+		
+		entrenamiento.entrenar(mutante, tiempo)
+	}
+	method entrenamientoFaccion(faccion) {
+		// Modifico a cada Mutante de una Fraccion
+		faccion.mutantes().map{mutante => self.entrenarMutante(mutante, tiempo, habilidades, fraccion)}
+	}
+
+	method entrenamientoBasico(mutante, tiempo){
+	method entrenar(mutante, tiempo, habilidades, fraccion){ 
+		mutante.potencial(mutante.potencial + tiempo) 
+	}	
+}	
+	
+object entrenamientoCompleto{	
+	method entrenar(mutante, tiempo, habilidades, fraccion){
+		entrenamientoBasico.entrenar(mutante, tiempo, habilidades, fraccion)
+		if( habilidades.any{ habilidad => fraccion.contieneHabilidad(habilidad)})
+		{
+			habilidades.map{habilidad => if(aEntrenar.contains(habilidad.nucleo())) habilidad.nivel(habilidad.nivel()+2)}
+		}
+	}
+	
+}
+	
+}
 
 
 
 
+
+
+
+/*
+object entrenamientoBasico{
+	method entrenar(mutante, tiempo, habilidades, fraccion){ 
+		mutante.potencial(mutante.potencial + tiempo) 
+	}	
+}	
+	
+object entrenamientoCompleto{	
+	method entrenar(mutante, tiempo, habilidades, fraccion){
+		entrenamientoBasico.entrenar(mutante, tiempo, habilidades, fraccion)
+		if( habilidades.any{ habilidad => fraccion.contieneHabilidad(habilidad)})
+		{
+			habilidades.map{habilidad => if(aEntrenar.contains(habilidad.nucleo())) habilidad.nivel(habilidad.nivel()+2)}
+		}
+	}
+	
+}
+//  fraccion.contieneHabilidad(habilidad) = self.habilidadesFaccion().any{ habilidadFaccion => habilidadFaccion == habilidad}
+
+class Sesion  {
+	// Tipo de entrenammiento de la seaion (basico o completo)      
+	var property entrenamiento
+	// Habilidades q seran entrenadas
+	var property habilidades
+	// Tiempo q dura la sesion de entrenamiento 
+	const property tiempo
+
+	method entrenarMutante(mutante, tiempo, habilidades, faccion) {
+		
+		entrenamiento.entrenar(mutante, tiempo)
+	}
+	method entrenamientoFaccion(faccion) {
+		// Modifico a cada Mutante de una Fraccion
+		faccion.mutantes().map{mutante => self.entrenarMutante(mutante, tiempo, habilidades, fraccion)}
+	}
+
+*/
 
