@@ -126,48 +126,23 @@ class Faccion{
 	method nombres() = mutantes.map{mutante => mutante.nombre()}
 	
 	method integrantesEnComun(otraFaccion)= self.nombres().intersection(otraFaccion.nombres())
-	
-	/*
-	method convieneAgregar(mutante){
-		//agarro una habilidad de mi mutante y me fijo para cada elemento de la lista si cumple alguna de las 2 condiciones
-		return (mutante.habilidades().any({ habilidadMutante => self.habilidadesFaccion().
-				any({ 
-				habilidad => ((habilidad.nucleo()) != (habilidadMutante.nucleo())) or 
-				((habilidadMutante.nivel()) > (habilidad.nivel()))})}))
-				* 
-				* (self.habilidadesFaccion().contains(habilidadMutante)) 
-						or 
+	 
+	method contieneHabilidad(habilidad) = self.habilidadesFaccion().contains(habilidad)
+
+	method puedeAgregarHabilidad(habilidad) = mutantes.any{ mutanteFaccion => 
+		mutanteFaccion.habilidades().any{ habilidadFaccion => 
+			habilidadFaccion.nucleo() == habilidad.nucleo() and habilidadFaccion.nivel() < habilidad.nivel()			
+		}														
+	}	 
+
+	method convieneAgregar(mutante) = mutante.habilidades().any{ habilidad => 
+		not self.contieneHabilidad(habilidad) or self.puedeAgregarHabilidad(habilidad)
 	}
-	*/
-	 
-	 
-	 
-	method convieneAgregar(mutante){
-		return 	( mutante.habilidades().any({  	
-						habilidadMutante => (not self.habilidadesFaccion().contains(habilidadMutante)) 
-							or 
-							( mutantes.any({ 
-								mutanteFac => mutanteFac.habilidades().any(
-								{ 	habilidadFac => (habilidadFac.nucleo() == habilidadMutante.nucleo()) 
-									and (habilidadFac.nivel() < habilidadMutante.nivel())
-									
-								})
-																	
-							 })
-							
-						   )
-					})
-				)
-
-	}
-
-
-
-
+				
 }
 
 
-
+// Ejemplos me Mutantes
 const ciclope = new Mutante(nombre= "Scott Summers", potencial = 30, habilidades = [new Habilidad(nucleo = explosionOptica, nivel= 11)])
 
 const fenix = new Mutante(nombre= "Jean Gray", potencial = 40, habilidades = [ new Habilidad( nucleo = telepatia, nivel = 13)])
@@ -179,8 +154,6 @@ const iceman = new Mutante(nombre= "Bobby Drake", potencial = 25, habilidades = 
 const cable = new Mutante(nombre= "Nathan Summers", potencial=25, habilidades = [new Habilidad(nucleo = telequinesis, nivel = 10)])
 
 const domino = new Mutante(nombre="Neena Thurman" , potencial=25, habilidades = [new Habilidad(nucleo=suerte, nivel=13)])
-const domino2 = new Mutante(nombre="Neena Thurman" , potencial=25, habilidades = [new Habilidad(nucleo=suerte, nivel=14)])
-
 
 const sunspot = new Mutante(nombre="Roberto Da Costa" , potencial=25, habilidades = [new Habilidad(nucleo=absorcionSolar, nivel=8)])
 
@@ -190,11 +163,15 @@ const blob = new Mutante(nombre="Fred Dukes", potencial= 20 , habilidades= [new 
 
 const borrar = new Mutante(nombre="Borrar", potencial= 20 , habilidades= [new Habilidad( nucleo = explosionOptica, nivel = 20), new Habilidad( nucleo = magnetismo, nivel = 20)])
 
+// Ejemplos de Facciones
 const xforce = new Faccion(mutantes=[cable,domino,sunspot,borrar]) // [ telequinesis(10), suerte(13), absorcionSolar(8)]
 
 const hermandad = new Faccion(mutantes = [magneto, blob, quicksilver]) //[ magnetismo(14), inamovible(6), supervelocidad(9)]
 
 const xmen = new Faccion( mutantes = [fenix, iceman, sunspot, cable]) // [ telepatia(13), transformacion(7), absorcionSolar(8), telequinesis(10)]
+
+
+
 
 
 
