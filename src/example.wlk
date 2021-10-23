@@ -6,6 +6,7 @@ class Mutante{
 	var property potencial = 0
 	const property habilidades = []  
 
+	method potencial(valor){ potencial = potencial + valor}
 	method poderTotal()= potencial + habilidades.sum{habilidad=> habilidad.nucleo().incrementoPotencial(self)}
 
 	method puedeAprender(nucleo)= nucleo.cumpleRequisitos(self)
@@ -26,7 +27,8 @@ class Mutante{
 class Habilidad{
 	var property nucleo
 	var property nivel = 1
-	
+
+	method aumentarNivel(numero) {nivel = nivel + numero}
  	override method ==(habilidad)= nucleo == habilidad.nucleo() 
 }
 
@@ -104,9 +106,14 @@ class Faccion{
 	const property mutantes= [] 
 	var property habilidadesFaccion= #{}
 	
+//	method habilidadesMutantes(){ return mutantes.map{habilidades().flatten()}} 
 	method multiplicador()= self.nucleos().asSet().size().max(self.mutantes().size())
 	method nucleos()= self.habilidadesFaccion().map{habilidad => habilidad.nucleo()}
-	method habilidadesFaccion()= (mutantes.map{mutante => mutante.habilidades()}).flatten()
+	method habilidadesFaccion()= {
+		const lista = []
+		mutantes.forEach{mutante => lista.addAll(mutante.habilidades())}
+		return lista
+	}
 	
 	method poderTotal()= (mutantes.sum{mutante => mutante.poderTotal()}) * self.multiplicador()
 	
@@ -154,8 +161,8 @@ const magneto = new Mutante(nombre="Erik Lenhsherr", potencial= 50 , habilidades
 
 const blob = new Mutante(nombre="Fred Dukes", potencial= 20 , habilidades= [new Habilidad( nucleo = inamovible, nivel = 6)])
 
+
 const borrar = new Mutante(nombre="Borrar", potencial= 20 , habilidades= [new Habilidad( nucleo = telequinesis, nivel = 11)])
--
 
 // Ejemplos de Facciones
 const xforce = new Faccion(mutantes=[cable,domino,sunspot]) // [ telequinesis(10), suerte(13), absorcionSolar(8)]
@@ -184,42 +191,56 @@ object entrenamientoCompleto{
 }*/
 //  fraccion.contieneHabilidad(habilidad) = self.habilidadesFaccion().any{ habilidadFaccion => habilidadFaccion == habilidad}
 
-class Sesion  {
-	// Tipo de entrenammiento de la seaion (basico o completo)      
-	var property entrenamiento
+class Entrenamiento{
+	
 	// Habilidades q seran entrenadas
-	var property habilidades
+	var property habilidades = []
 	// Tiempo q dura la sesion de entrenamiento 
 	const property tiempo
 
-	method entrenarMutante(mutante, tiempo, habilidades, faccion) {
-		
-		entrenamiento.entrenar(mutante, tiempo)
+	method entrenamientoBasicoMutante(mutante){ 
+		mutante.potencial(tiempo) 
 	}
-	method entrenamientoFaccion(faccion) {
-		// Modifico a cada Mutante de una Fraccion
-		faccion.mutantes().map{mutante => self.entrenarMutante(mutante, tiempo, habilidades, fraccion)}
+	method entrenamientoBasico(faccion){
+		faccion.mutantes().forEach{mutante => self.entrenamientoBasicoMutante(mutante)}
 	}
 
-	method entrenamientoBasico(mutante, tiempo){
-	method entrenar(mutante, tiempo, habilidades, fraccion){ 
-		mutante.potencial(mutante.potencial + tiempo) 
-	}	
-}	
+	//method entrenamientoCompletoMutante(mutante){
+	//	const habilidadesAEntrenar = mutante.habilidad()
+		//habilidadesAEntrenar.filter{ habilidadMutante => habilidades.any{ habilidad => habilidad == habilidadMutante}
+		//habilidadesAEntrenar.forEach{habilidad => habilidad.aumentarNivel(2)}
+	//}
 	
-object entrenamientoCompleto{	
-	method entrenar(mutante, tiempo, habilidades, fraccion){
-		entrenamientoBasico.entrenar(mutante, tiempo, habilidades, fraccion)
-		if( habilidades.any{ habilidad => fraccion.contieneHabilidad(habilidad)})
-		{
-			habilidades.map{habilidad => if(aEntrenar.contains(habilidad.nucleo())) habilidad.nivel(habilidad.nivel()+2)}
+	method entrenamientoCompleto222(faccion){
+		self.entrenamientoBasico(faccion)
+		const habilidadesAEntrenar = faccion.habilidadesFaccion().filter({ habilidadMutante => 
+			habilidades.any{ habilidad => habilidad == habilidadMutante}
+		})
+		habilidadesAEntrenar.forEach{habilidad => habilidad.aumentarNivel(2)}
+	}
+	
+
+	
+	method entrenamientoCompletoMutante(mutante){
+		mutante.habilidades().forEach{
+			habilidad => 
+			if(habilidades.contains(habilidad.nucleo()))
+			{
+				habilidad.aumentarNivel(2)
+			}
 		}
 	}
+
+	method entrenamientoCompleto(faccion) {
+		self.entrenamientoBasico(faccion)
+		faccion.mutantes().forEach{mutante => self.entrenamientoCompletoMutante(mutante)}
+	}
 	
-}
 	
 }
 
+const yoga = new Entrenamiento(habilidades=[telequinesis],tiempo=2)
+//onst xforce = new Faccion(mutantes=[cable,domino,sunspot]) // [ telequinesis(10), suerte(13), absorcionSolar(8)]
 
 
 
