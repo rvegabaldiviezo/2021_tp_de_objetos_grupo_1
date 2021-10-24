@@ -165,4 +165,7 @@ class Entrenamiento{
 	
 	
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6329071c719fb7935a1a9cc05ec8f52a98eb2a99
