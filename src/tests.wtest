@@ -1,6 +1,39 @@
 import example.*
 
+// Ejemplos me Mutantes
+const ciclope = new Mutante(nombre= "Scott Summers", potencial = 30, habilidades = [new Habilidad(nucleo = explosionOptica, nivel= 11)])
+
+const ciclope2 = new Mutante(nombre= "Scott Summers", potencial = 30, habilidades = [new Habilidad(nucleo = explosionOptica, nivel= 10)])
+
+const fenix = new Mutante(nombre= "Jean Gray", potencial = 40, habilidades = [ new Habilidad( nucleo = telepatia, nivel = 13)])
+
+const quicksilver = new Mutante(nombre= "Pietro Maximoff", potencial = 35, habilidades = [new Habilidad(nucleo=supervelocidad, nivel=9) ])
+
+const iceman = new Mutante(nombre= "Bobby Drake", potencial = 25, habilidades = [new Habilidad(nucleo=transformacion, nivel=7) ])
+
+const cable = new Mutante(nombre= "Nathan Summers", potencial=25, habilidades = [new Habilidad(nucleo = telequinesis, nivel = 10)])
+
+const domino = new Mutante(nombre="Neena Thurman" , potencial=25, habilidades = [new Habilidad(nucleo=suerte, nivel=13)])
+
+const sunspot = new Mutante(nombre="Roberto Da Costa" , potencial=25, habilidades = [new Habilidad(nucleo=absorcionSolar, nivel=8)])
+
+const magneto = new Mutante(nombre="Erik Lenhsherr", potencial= 50 , habilidades= [new Habilidad( nucleo = magnetismo, nivel = 14)])
+
+const blob = new Mutante(nombre="Fred Dukes", potencial= 20 , habilidades= [new Habilidad( nucleo = inamovible, nivel = 6)])
+
+const borrar = new Mutante(nombre="Borrar", potencial= 20 , habilidades= [new Habilidad( nucleo = telequinesis, nivel = 11)])
+
 //
+const yoga = new Entrenamiento(habilidades=[telequinesis],tiempo=2)
+
+// Ejemplos de Facciones
+const xforce = new Faccion(mutantes=[cable,domino,sunspot]) // [ telequinesis(10), suerte(13), absorcionSolar(8)]
+
+const hermandad = new Faccion(mutantes = [magneto, blob, quicksilver]) //[ magnetismo(14), inamovible(6), supervelocidad(9)]
+
+const xmen = new Faccion( mutantes = [fenix, iceman, sunspot, cable]) // [ telepatia(13), transformacion(7), absorcionSolar(8), telequinesis(10)]
+
+
 describe "Test para comprobacion de poder total base" {
 
 	test "El poder total de ciclope es 60" {
@@ -80,21 +113,26 @@ describe "Test para las habilidades que pueden aprender los estudiantes"{
 // ++++ FACCIONES +++
 
 //
-describe "Test para comprobar metodos de la clase Facciones" {
+describe "Test para probar metodos de facciones" {
 
-	test "El poder total de xforce es  " {
-		assert.equals(60, ciclope.poderTotal())
+	 test "El poder total de xforce es 525 " {
+		assert.equals(525, xforce.poderTotal())
 	}
 
-	test "El poder total de Fénix no es 80, es 120" {
-		assert.equals(120, fenix.poderTotal())
+	test "El poder total de xmen" {
+		assert.equals(960, xmen.poderTotal())
+	}
+	
+	test "El metodo agregarMutante agrega en xforce a ciclope" {
+		xforce.agregarMutante(ciclope)
+		assert.that(xforce.mutantes().contains(ciclope))
 	}
 
-	test "El poder total de iceman es 20" {
-		assert.equals(20, iceman.poderTotal())
+	test "El metodo quitarMutante quita en xforce a cable" {
+		assert.notEquals(cable, xforce.mutantes().contains(cable))
 	}
-
-	test "El poder total de quicksilver es 60" {
-		assert.equals(60, quicksilver.poderTotal())
+	
+	test "Los integrantes en comun de la faccion xforce y xmen son: cable y sunstup" {
+		assert.equals(#{"Nathan Summers","Roberto Da Costa"}, xforce.integrantesEnComun(xmen))
 	}
 }
