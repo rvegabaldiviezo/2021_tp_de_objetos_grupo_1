@@ -1,7 +1,6 @@
 import example.*
 
-
-
+//
 describe "Test para comprobacion de poder total base" {
 
 	test "El poder total de ciclope es 60" {
@@ -75,5 +74,27 @@ describe "Test para las habilidades que pueden aprender los estudiantes"{
 		assert.notThat(ciclope.puedeAprender(telepatia))
 		assert.notThat(fenix.puedeAprender(telepatia))
 		assert.notThat(iceman.puedeAprender(telepatia))
+	}
+}
+
+// ++++ FACCIONES +++
+
+//
+describe "Test para comprobar metodos de la clase Facciones" {
+
+	test "El poder total de xforce es  " {
+		assert.equals(60, ciclope.poderTotal())
+	}
+
+	test "El poder total de Fénix no es 80, es 120" {
+		assert.equals(120, fenix.poderTotal())
+	}
+
+	test "El poder total de iceman es 20" {
+		assert.equals(20, iceman.poderTotal())
+	}
+
+	test "El poder total de quicksilver es 60" {
+		assert.equals(60, quicksilver.poderTotal())
 	}
 }

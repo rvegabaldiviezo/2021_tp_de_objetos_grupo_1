@@ -1,6 +1,5 @@
 /** First Wollok example */
 
-
 class Mutante{
 	const property nombre =""
 	var property potencial = 0
@@ -109,11 +108,7 @@ class Faccion{
 //	method habilidadesMutantes(){ return mutantes.map{habilidades().flatten()}} 
 	method multiplicador()= self.nucleos().asSet().size().max(self.mutantes().size())
 	method nucleos()= self.habilidadesFaccion().map{habilidad => habilidad.nucleo()}
-	method habilidadesFaccion()= {
-		const lista = []
-		mutantes.forEach{mutante => lista.addAll(mutante.habilidades())}
-		return lista
-	}
+	method habilidadesFaccion()= (mutantes.map{mutante => mutante.habilidades()}).flatten()
 	
 	method poderTotal()= (mutantes.sum{mutante => mutante.poderTotal()}) * self.multiplicador()
 	
@@ -137,59 +132,7 @@ class Faccion{
 	}
 				
 }
-
-
-// Ejemplos me Mutantes
-const ciclope = new Mutante(nombre= "Scott Summers", potencial = 30, habilidades = [new Habilidad(nucleo = explosionOptica, nivel= 11)])
-
-const ciclope2 = new Mutante(nombre= "Scott Summers", potencial = 30, habilidades = [new Habilidad(nucleo = explosionOptica, nivel= 10)])
-
-
-const fenix = new Mutante(nombre= "Jean Gray", potencial = 40, habilidades = [ new Habilidad( nucleo = telepatia, nivel = 13)])
-
-const quicksilver = new Mutante(nombre= "Pietro Maximoff", potencial = 35, habilidades = [new Habilidad(nucleo=supervelocidad, nivel=9) ])
-
-const iceman = new Mutante(nombre= "Bobby Drake", potencial = 25, habilidades = [new Habilidad(nucleo=transformacion, nivel=7) ])
-
-const cable = new Mutante(nombre= "Nathan Summers", potencial=25, habilidades = [new Habilidad(nucleo = telequinesis, nivel = 10)])
-
-const domino = new Mutante(nombre="Neena Thurman" , potencial=25, habilidades = [new Habilidad(nucleo=suerte, nivel=13)])
-
-const sunspot = new Mutante(nombre="Roberto Da Costa" , potencial=25, habilidades = [new Habilidad(nucleo=absorcionSolar, nivel=8)])
-
-const magneto = new Mutante(nombre="Erik Lenhsherr", potencial= 50 , habilidades= [new Habilidad( nucleo = magnetismo, nivel = 14)])
-
-const blob = new Mutante(nombre="Fred Dukes", potencial= 20 , habilidades= [new Habilidad( nucleo = inamovible, nivel = 6)])
-
-
-const borrar = new Mutante(nombre="Borrar", potencial= 20 , habilidades= [new Habilidad( nucleo = telequinesis, nivel = 11)])
-
-// Ejemplos de Facciones
-const xforce = new Faccion(mutantes=[cable,domino,sunspot]) // [ telequinesis(10), suerte(13), absorcionSolar(8)]
-
-const hermandad = new Faccion(mutantes = [magneto, blob, quicksilver]) //[ magnetismo(14), inamovible(6), supervelocidad(9)]
-
-const xmen = new Faccion( mutantes = [fenix, iceman, sunspot, cable]) // [ telepatia(13), transformacion(7), absorcionSolar(8), telequinesis(10)]
-
 ///////////////////////
-/*
-object entrenamientoBasico{
-	method entrenar(mutante, tiempo, habilidades, fraccion){ 
-		mutante.potencial(mutante.potencial + tiempo) 
-	}	
-}	
-	
-object entrenamientoCompleto{	
-	method entrenar(mutante, tiempo, habilidades, fraccion){
-		entrenamientoBasico.entrenar(mutante, tiempo, habilidades, fraccion)
-		if( habilidades.any{ habilidad => fraccion.contieneHabilidad(habilidad)})
-		{
-			habilidades.map{habilidad => if(aEntrenar.contains(habilidad.nucleo())) habilidad.nivel(habilidad.nivel()+2)}
-		}
-	}
-	
-}*/
-//  fraccion.contieneHabilidad(habilidad) = self.habilidadesFaccion().any{ habilidadFaccion => habilidadFaccion == habilidad}
 
 class Entrenamiento{
 	
@@ -205,22 +148,6 @@ class Entrenamiento{
 		faccion.mutantes().forEach{mutante => self.entrenamientoBasicoMutante(mutante)}
 	}
 
-	//method entrenamientoCompletoMutante(mutante){
-	//	const habilidadesAEntrenar = mutante.habilidad()
-		//habilidadesAEntrenar.filter{ habilidadMutante => habilidades.any{ habilidad => habilidad == habilidadMutante}
-		//habilidadesAEntrenar.forEach{habilidad => habilidad.aumentarNivel(2)}
-	//}
-	
-	method entrenamientoCompleto222(faccion){
-		self.entrenamientoBasico(faccion)
-		const habilidadesAEntrenar = faccion.habilidadesFaccion().filter({ habilidadMutante => 
-			habilidades.any{ habilidad => habilidad == habilidadMutante}
-		})
-		habilidadesAEntrenar.forEach{habilidad => habilidad.aumentarNivel(2)}
-	}
-	
-
-	
 	method entrenamientoCompletoMutante(mutante){
 		mutante.habilidades().forEach{
 			habilidad => 
@@ -239,49 +166,65 @@ class Entrenamiento{
 	
 }
 
+// Ejemplos me Mutantes
+const ciclope = new Mutante(nombre= "Scott Summers", potencial = 30, habilidades = [new Habilidad(nucleo = explosionOptica, nivel= 11)])
+
+const ciclope2 = new Mutante(nombre= "Scott Summers", potencial = 30, habilidades = [new Habilidad(nucleo = explosionOptica, nivel= 10)])
+
+const fenix = new Mutante(nombre= "Jean Gray", potencial = 40, habilidades = [ new Habilidad( nucleo = telepatia, nivel = 13)])
+
+const quicksilver = new Mutante(nombre= "Pietro Maximoff", potencial = 35, habilidades = [new Habilidad(nucleo=supervelocidad, nivel=9) ])
+
+const iceman = new Mutante(nombre= "Bobby Drake", potencial = 25, habilidades = [new Habilidad(nucleo=transformacion, nivel=7) ])
+
+const cable = new Mutante(nombre= "Nathan Summers", potencial=25, habilidades = [new Habilidad(nucleo = telequinesis, nivel = 10)])
+
+const domino = new Mutante(nombre="Neena Thurman" , potencial=25, habilidades = [new Habilidad(nucleo=suerte, nivel=13)])
+
+const sunspot = new Mutante(nombre="Roberto Da Costa" , potencial=25, habilidades = [new Habilidad(nucleo=absorcionSolar, nivel=8)])
+
+const magneto = new Mutante(nombre="Erik Lenhsherr", potencial= 50 , habilidades= [new Habilidad( nucleo = magnetismo, nivel = 14)])
+
+const blob = new Mutante(nombre="Fred Dukes", potencial= 20 , habilidades= [new Habilidad( nucleo = inamovible, nivel = 6)])
+
+const borrar = new Mutante(nombre="Borrar", potencial= 20 , habilidades= [new Habilidad( nucleo = telequinesis, nivel = 11)])
+
+//
 const yoga = new Entrenamiento(habilidades=[telequinesis],tiempo=2)
 //onst xforce = new Faccion(mutantes=[cable,domino,sunspot]) // [ telequinesis(10), suerte(13), absorcionSolar(8)]
 
+// Ejemplos de Facciones
+const xforce = new Faccion(mutantes=[cable,domino,sunspot]) // [ telequinesis(10), suerte(13), absorcionSolar(8)]
 
+const hermandad = new Faccion(mutantes = [magneto, blob, quicksilver]) //[ magnetismo(14), inamovible(6), supervelocidad(9)]
 
-
-
+const xmen = new Faccion( mutantes = [fenix, iceman, sunspot, cable]) // [ telepatia(13), transformacion(7), absorcionSolar(8), telequinesis(10)]
 
 /*
-object entrenamientoBasico{
-	method entrenar(mutante, tiempo, habilidades, fraccion){ 
-		mutante.potencial(mutante.potencial + tiempo) 
-	}	
-}	
-	
-object entrenamientoCompleto{	
-	method entrenar(mutante, tiempo, habilidades, fraccion){
-		entrenamientoBasico.entrenar(mutante, tiempo, habilidades, fraccion)
-		if( habilidades.any{ habilidad => fraccion.contieneHabilidad(habilidad)})
-		{
-			habilidades.map{habilidad => if(aEntrenar.contains(habilidad.nucleo())) habilidad.nivel(habilidad.nivel()+2)}
-		}
+* 
+* test "El poder total de xforce es 525 " {
+		assert.equals(525, xforce.poderTotal())
+	}
+
+	test "El poder total de xmen" {
+		assert.equals(960, fxmen.poderTotal())
+	}
+
+	test "poder total de quicksilver es 60" {
+		assert.equals(60, quicksilver.poderTotal())
 	}
 	
-}
-//  fraccion.contieneHabilidad(habilidad) = self.habilidadesFaccion().any{ habilidadFaccion => habilidadFaccion == habilidad}
-
-class Sesion  {
-	// Tipo de entrenammiento de la seaion (basico o completo)      
-	var property entrenamiento
-	// Habilidades q seran entrenadas
-	var property habilidades
-	// Tiempo q dura la sesion de entrenamiento 
-	const property tiempo
-
-	method entrenarMutante(mutante, tiempo, habilidades, faccion) {
-		
-		entrenamiento.entrenar(mutante, tiempo)
+	test "El metodo agregarMutante agrega en xforce a ciclope" {
+		assert.equals(ciclope, xforce.mutantes().contains(ciclope))
 	}
-	method entrenamientoFaccion(faccion) {
-		// Modifico a cada Mutante de una Fraccion
-		faccion.mutantes().map{mutante => self.entrenarMutante(mutante, tiempo, habilidades, fraccion)}
+
+	test "El metodo quitarMutante quita en xforce a cable" {
+		assert.notEquals(cable, xforce.mutantes().contains(cable))
 	}
+	
+	test "Los integrantes en comun de la faccion xforce y xmen son: cable y sunstup" {
+		assert.equals(60, quicksilver.poderTotal())
+	}
+
 
 */
-
