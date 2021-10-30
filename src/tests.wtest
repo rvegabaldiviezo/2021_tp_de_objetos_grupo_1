@@ -1,16 +1,8 @@
 import example.*
 
-<<<<<<< HEAD
 // Ejemplos de Mutantes
 const ciclope = new Mutante(nombre= "Scott Summers", potencial = 30, habilidades = [new Habilidad(nucleo = explosionOptica, nivel= 11)])
 
-=======
-// Ejemplos me Mutantes
-const ciclope = new Mutante(nombre= "Scott Summers", potencial = 30, habilidades = [new Habilidad(nucleo = explosionOptica, nivel= 11)])
-
-const ciclope2 = new Mutante(nombre= "Scott Summers", potencial = 30, habilidades = [new Habilidad(nucleo = explosionOptica, nivel= 10)])
-
->>>>>>> 6329071c719fb7935a1a9cc05ec8f52a98eb2a99
 const fenix = new Mutante(nombre= "Jean Gray", potencial = 40, habilidades = [ new Habilidad( nucleo = telepatia, nivel = 13)])
 
 const quicksilver = new Mutante(nombre= "Pietro Maximoff", potencial = 35, habilidades = [new Habilidad(nucleo=supervelocidad, nivel=9) ])
@@ -27,14 +19,7 @@ const magneto = new Mutante(nombre="Erik Lenhsherr", potencial= 50 , habilidades
 
 const blob = new Mutante(nombre="Fred Dukes", potencial= 20 , habilidades= [new Habilidad( nucleo = inamovible, nivel = 6)])
 
-<<<<<<< HEAD
-=======
-const borrar = new Mutante(nombre="Borrar", potencial= 20 , habilidades= [new Habilidad( nucleo = telequinesis, nivel = 11)])
 
-//
-const yoga = new Entrenamiento(habilidades=[telequinesis],tiempo=2)
-
->>>>>>> 6329071c719fb7935a1a9cc05ec8f52a98eb2a99
 // Ejemplos de Facciones
 const xforce = new Faccion(mutantes=[cable,domino,sunspot]) // [ telequinesis(10), suerte(13), absorcionSolar(8)]
 
@@ -42,15 +27,11 @@ const hermandad = new Faccion(mutantes = [magneto, blob, quicksilver]) //[ magne
 
 const xmen = new Faccion( mutantes = [fenix, iceman, sunspot, cable]) // [ telepatia(13), transformacion(7), absorcionSolar(8), telequinesis(10)]
 
-<<<<<<< HEAD
 // Ejemplos de sesiones Entrenamientos
 const yoga = new Entrenamiento(habilidades=[telequinesis,supervelocidad],tiempo=1)
 const meditacion = new Entrenamiento(habilidades=[telequinesis, telepatia],tiempo=2)
 
 // TEST
-=======
-
->>>>>>> 6329071c719fb7935a1a9cc05ec8f52a98eb2a99
 describe "Test para comprobacion de poder total base" {
 
 	test "El poder total de ciclope es 60" {
@@ -129,10 +110,6 @@ describe "Test para las habilidades que pueden aprender los estudiantes"{
 
 // ++++ FACCIONES +++
 
-<<<<<<< HEAD
-=======
-//
->>>>>>> 6329071c719fb7935a1a9cc05ec8f52a98eb2a99
 describe "Test para probar metodos de facciones" {
 
 	 test "El poder total de xforce es 525 " {
@@ -141,7 +118,6 @@ describe "Test para probar metodos de facciones" {
 
 	test "El poder total de xmen" {
 		assert.equals(960, xmen.poderTotal())
-<<<<<<< HEAD
 	}
 	
 	test "El metodo agregarMutante agrega en xforce a ciclope" {
@@ -155,17 +131,15 @@ describe "Test para probar metodos de facciones" {
 	
 	test "Los integrantes en comun de la faccion xforce y xmen son: cable y sunstup" {
 		assert.equals(#{"Nathan Summers","Roberto Da Costa"}, xforce.integrantesEnComun(xmen))
-=======
 	}
-	
-	test "El metodo agregarMutante agrega en xforce a ciclope" {
-		xforce.agregarMutante(ciclope)
-		assert.that(xforce.mutantes().contains(ciclope))
->>>>>>> 6329071c719fb7935a1a9cc05ec8f52a98eb2a99
+
+	test "Agregamos una habilidadad de inamovible a cable y comprobamos que el multiplicador sigue siendo 3"{
+		cable.aprenderHabilidad(new Habilidad(nucleo= inamovible))
+		assert.equals(5,xmen.nucleos().size())
+		assert.equals(4,xmen.multiplicador())
 	}
 }
 
-<<<<<<< HEAD
 // ++++ ENTRENAMIENTOS +++
 
 describe "Test para probar los metodos de Entrenamientos" {
@@ -173,19 +147,10 @@ describe "Test para probar los metodos de Entrenamientos" {
 	 test "El entrenamiento basico de la faccion xforce para la sesion de yoga le da un poder total de 546" {
 	 	yoga.entrenamientoBasico(xforce)
 		assert.equals(546, xforce.poderTotal())
-=======
-	test "El metodo quitarMutante quita en xforce a cable" {
-		assert.notEquals(cable, xforce.mutantes().contains(cable))
-	}
-	
-	test "Los integrantes en comun de la faccion xforce y xmen son: cable y sunstup" {
-		assert.equals(#{"Nathan Summers","Roberto Da Costa"}, xforce.integrantesEnComun(xmen))
->>>>>>> 6329071c719fb7935a1a9cc05ec8f52a98eb2a99
 	}
 
 	 test "El entrenamiento completo de la faccion xforce para la sesion de yoga le da un nivel de 12 a la habilidad telequinesis de uno de sus miembros" {
 	 	yoga.entrenamientoCompleto(xforce)
 		assert.equals([12], cable.habilidades().map{ habilidad => habilidad.nivel()})
-	}
-	
+	}	
 }

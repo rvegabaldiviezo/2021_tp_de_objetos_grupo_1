@@ -103,9 +103,8 @@ object inamovible{
 
 class Faccion{
 	const property mutantes= [] 
-	var property habilidadesFaccion= #{}
 	
-	method multiplicador()= self.nucleos().asSet().size().max(self.mutantes().size())
+	method multiplicador()= self.nucleos().asSet().size().min(self.mutantes().size())
 	method nucleos()= self.habilidadesFaccion().map{habilidad => habilidad.nucleo()}
 	method habilidadesFaccion()= (mutantes.map{mutante => mutante.habilidades()}).flatten()
 	
@@ -114,9 +113,9 @@ class Faccion{
 	method agregarMutante(mutante)= mutantes.add(mutante)
 	method quitarMutante(mutante)= mutantes.remove(mutante)
 	
-	method nombres() = mutantes.map{mutante => mutante.nombre()}
+	method nombres() = (mutantes.map{mutante => mutante.nombre()}).asSet()
 	
-	method integrantesEnComun(otraFaccion)= self.nombres().asSet().intersection(otraFaccion.nombres())
+	method integrantesEnComun(otraFaccion)= self.nombres().intersection(otraFaccion.nombres())
 	 
 	method contieneHabilidad(habilidad) = self.habilidadesFaccion().any{ habilidadFaccion => habilidadFaccion == habilidad}
 
@@ -131,8 +130,6 @@ class Faccion{
 	}
 				
 }
-
-///////////////////////
 
 class Entrenamiento{
 	
@@ -162,10 +159,4 @@ class Entrenamiento{
 		self.entrenamientoBasico(faccion)
 		faccion.mutantes().forEach{mutante => self.entrenamientoCompletoMutante(mutante)}
 	}
-	
-	
 }
-<<<<<<< HEAD
-
-=======
->>>>>>> 6329071c719fb7935a1a9cc05ec8f52a98eb2a99
