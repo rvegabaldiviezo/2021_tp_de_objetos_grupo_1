@@ -145,12 +145,12 @@ describe "Test para probar metodos de facciones" {
 describe "Test para probar los metodos de Entrenamientos" {
 
 	 test "El entrenamiento basico de la faccion xforce para la sesion de yoga le da un poder total de 546" {
-	 	yoga.entrenamientoBasico(xforce)
+	 	yoga.entrenarFaccion(xforce)
 		assert.equals(546, xforce.poderTotal())
 	}
 
 	 test "El entrenamiento completo de la faccion xforce para la sesion de yoga le da un nivel de 12 a la habilidad telequinesis de uno de sus miembros" {
-	 	yoga.entrenamientoCompleto(xforce)
+	 	yoga.entrenarFaccion(xforce)
 		assert.equals([12], cable.habilidades().map{ habilidad => habilidad.nivel()})
 		assert.equals(546, xforce.poderTotal())
 	}	
