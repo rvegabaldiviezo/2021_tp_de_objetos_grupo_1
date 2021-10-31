@@ -5,7 +5,7 @@ class Mutante{
 	var property potencial = 0
 	const property habilidades = []  
 
-	method potencial(valor){ potencial = potencial + valor}
+	method incrementaPotencial(valor){ potencial = potencial + valor}
 	method poderTotal()= potencial + habilidades.sum{habilidad=> habilidad.nucleo().incrementoPotencial(self)}
 
 	method puedeAprender(nucleo)= nucleo.cumpleRequisitos(self)
@@ -131,32 +131,29 @@ class Faccion{
 				
 }
 
-class Entrenamiento{
-	
-	// Habilidades q seran entrenadas
-	var property habilidades = []
-	// Tiempo q dura la sesion de entrenamiento 
-	const property tiempo
+class EntrenamientoBasico{
+	var property tiempo
 
 	method entrenamientoBasicoMutante(mutante){ 
-		mutante.potencial(tiempo) 
+		mutante.incrementaPotencial(tiempo) 
 	}
 	method entrenamientoBasico(faccion){
 		faccion.mutantes().forEach{mutante => self.entrenamientoBasicoMutante(mutante)}
 	}
+}
 
+class EntrenamientoCompleto inherits EntrenamientoBasico{
+	var property habilidades = []
+
+	method entrenarHabilidad(habilidad){
+		if(habilidades.contains(habilidad.nucleo())) habilidad.aumentarNivel(2)
+	}
 	method entrenamientoCompletoMutante(mutante){
-		mutante.habilidades().forEach{
-			habilidad => 
-			if(habilidades.contains(habilidad.nucleo()))
-			{
-				habilidad.aumentarNivel(2)
-			}
-		}
+		self.entrenamientoBasicoMutante(mutante)
+		mutante.habilidades().forEach{ habilidad => self.entrenarHabilidad(habilidad)}
 	}
 
 	method entrenamientoCompleto(faccion) {
-		self.entrenamientoBasico(faccion)
 		faccion.mutantes().forEach{mutante => self.entrenamientoCompletoMutante(mutante)}
 	}
 }

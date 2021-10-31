@@ -28,8 +28,8 @@ const hermandad = new Faccion(mutantes = [magneto, blob, quicksilver]) //[ magne
 const xmen = new Faccion( mutantes = [fenix, iceman, sunspot, cable]) // [ telepatia(13), transformacion(7), absorcionSolar(8), telequinesis(10)]
 
 // Ejemplos de sesiones Entrenamientos
-const yoga = new Entrenamiento(habilidades=[telequinesis,supervelocidad],tiempo=1)
-const meditacion = new Entrenamiento(habilidades=[telequinesis, telepatia],tiempo=2)
+const yoga = new EntrenamientoCompleto(habilidades=[telequinesis,supervelocidad],tiempo=1)
+const meditacion = new EntrenamientoCompleto(habilidades=[telequinesis, telepatia],tiempo=2)
 
 // TEST
 describe "Test para comprobacion de poder total base" {
@@ -152,5 +152,6 @@ describe "Test para probar los metodos de Entrenamientos" {
 	 test "El entrenamiento completo de la faccion xforce para la sesion de yoga le da un nivel de 12 a la habilidad telequinesis de uno de sus miembros" {
 	 	yoga.entrenamientoCompleto(xforce)
 		assert.equals([12], cable.habilidades().map{ habilidad => habilidad.nivel()})
+		assert.equals(546, xforce.poderTotal())
 	}	
 }
