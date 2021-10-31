@@ -152,8 +152,4 @@ class EntrenamientoCompleto inherits EntrenamientoBasico{
 		super(mutante)
 		self.entrenarHabilidades(mutante)
 	}
-
-	override method entrenarFaccion(faccion) {
-		faccion.mutantes().forEach{mutante => self.entrenarMutante(mutante)}
-	}
 }
