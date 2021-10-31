@@ -134,26 +134,26 @@ class Faccion{
 class EntrenamientoBasico{
 	var property tiempo
 
-	method entrenamientoBasicoMutante(mutante){ 
+	method entrenamientoDeMutante(mutante){ 
 		mutante.incrementaPotencial(tiempo) 
 	}
-	method entrenamientoBasico(faccion){
-		faccion.mutantes().forEach{mutante => self.entrenamientoBasicoMutante(mutante)}
+	method entrenamientoDeFaccion(faccion){
+		faccion.mutantes().forEach{mutante => self.entrenamientoDeMutante(mutante)}
 	}
 }
 
 class EntrenamientoCompleto inherits EntrenamientoBasico{
 	var property habilidades = []
 
-	method entrenarHabilidad(habilidad){
-		if(habilidades.contains(habilidad.nucleo())) habilidad.aumentarNivel(2)
+	method entrenarHabilidades(mutante){
+		mutante.habilidades().forEach{ habilidad => if(habilidades.contains(habilidad.nucleo())) habilidad.aumentarNivel(2)}
 	}
-	method entrenamientoCompletoMutante(mutante){
-		self.entrenamientoBasicoMutante(mutante)
-		mutante.habilidades().forEach{ habilidad => self.entrenarHabilidad(habilidad)}
+	override method entrenamientoDeMutante(mutante){
+		super(mutante)
+		self.entrenarHabilidades(mutante)
 	}
 
-	method entrenamientoCompleto(faccion) {
-		faccion.mutantes().forEach{mutante => self.entrenamientoCompletoMutante(mutante)}
+	override method entrenamientoDeFaccion(faccion) {
+		faccion.mutantes().forEach{mutante => self.entrenamientoDeMutante(mutante)}
 	}
 }
