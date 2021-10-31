@@ -1,5 +1,37 @@
 import example.*
 
+// Ejemplos de Mutantes
+const ciclope = new Mutante(nombre= "Scott Summers", potencial = 30, habilidades = [new Habilidad(nucleo = explosionOptica, nivel= 11)])
+
+const fenix = new Mutante(nombre= "Jean Gray", potencial = 40, habilidades = [ new Habilidad( nucleo = telepatia, nivel = 13)])
+
+const quicksilver = new Mutante(nombre= "Pietro Maximoff", potencial = 35, habilidades = [new Habilidad(nucleo=supervelocidad, nivel=9) ])
+
+const iceman = new Mutante(nombre= "Bobby Drake", potencial = 25, habilidades = [new Habilidad(nucleo=transformacion, nivel=7) ])
+
+const cable = new Mutante(nombre= "Nathan Summers", potencial=25, habilidades = [new Habilidad(nucleo = telequinesis, nivel = 10)])
+
+const domino = new Mutante(nombre="Neena Thurman" , potencial=25, habilidades = [new Habilidad(nucleo=suerte, nivel=13)])
+
+const sunspot = new Mutante(nombre="Roberto Da Costa" , potencial=25, habilidades = [new Habilidad(nucleo=absorcionSolar, nivel=8)])
+
+const magneto = new Mutante(nombre="Erik Lenhsherr", potencial= 50 , habilidades= [new Habilidad( nucleo = magnetismo, nivel = 14)])
+
+const blob = new Mutante(nombre="Fred Dukes", potencial= 20 , habilidades= [new Habilidad( nucleo = inamovible, nivel = 6)])
+
+
+// Ejemplos de Facciones
+const xforce = new Faccion(mutantes=[cable,domino,sunspot]) // [ telequinesis(10), suerte(13), absorcionSolar(8)]
+
+const hermandad = new Faccion(mutantes = [magneto, blob, quicksilver]) //[ magnetismo(14), inamovible(6), supervelocidad(9)]
+
+const xmen = new Faccion( mutantes = [fenix, iceman, sunspot, cable]) // [ telepatia(13), transformacion(7), absorcionSolar(8), telequinesis(10)]
+
+// Ejemplos de sesiones Entrenamientos
+const yoga = new EntrenamientoCompleto(habilidades=[telequinesis,supervelocidad],tiempo=1)
+const meditacion = new EntrenamientoCompleto(habilidades=[telequinesis, telepatia],tiempo=2)
+
+// TEST
 describe "Test para comprobacion de poder total base" {
 
 	test "El poder total de ciclope es 60" {
@@ -41,30 +73,31 @@ describe "Test para las habilidades que pueden aprender los estudiantes"{
 	}
 
 	test "Ciclope aprende aprende supervelocidad y transformacion" {
-		ciclope.aprenderHabilidad(supervelocidad)
-		ciclope.aprenderHabilidad(transformacion)
-		assert.equals([explosionOptica,supervelocidad,transformacion],ciclope.habilidades())
+		ciclope.aprenderHabilidad(new Habilidad(nucleo = supervelocidad))
+		ciclope.aprenderHabilidad(new Habilidad(nucleo = transformacion))
+		const habilidades = [explosionOptica, supervelocidad, transformacion]
+		assert.equals(habilidades,ciclope.nucleos())
 	}
 
 	test "Fenix aprende transformacion y luego explosionOptica" {
-		fenix.aprenderHabilidad(transformacion)
-		fenix.aprenderHabilidad(explosionOptica)
-		assert.equals([telepatia,transformacion,explosionOptica],fenix.habilidades())
+		fenix.aprenderHabilidad(new Habilidad(nucleo = transformacion))
+		fenix.aprenderHabilidad(new Habilidad(nucleo = explosionOptica))
+		assert.equals([telepatia,transformacion, explosionOptica],fenix.nucleos())
 	}
 
 	test "Iceman puede aprender Transformación y Supervelocidad" {
-		iceman.aprenderHabilidad(supervelocidad)
-		assert.equals([transformacion,supervelocidad],iceman.habilidades())
+		iceman.aprenderHabilidad(new Habilidad( nucleo = supervelocidad))
+		assert.equals([transformacion, supervelocidad],iceman.nucleos())
 	}
 
 	test "Ciclope no puede aprender Explosion optica" {
-		ciclope.aprenderHabilidad(explosionOptica)
-		assert.equals([explosionOptica],ciclope.habilidades())
+		ciclope.aprenderHabilidad(new Habilidad(nucleo= explosionOptica))
+		assert.equals([explosionOptica],ciclope.nucleos())
 	}
 
 	test "Quicksilver no puede aprender telepatia" {
-		quicksilver.aprenderHabilidad(telepatia)
-		assert.equals([supervelocidad],quicksilver.habilidades())
+		quicksilver.aprenderHabilidad(new Habilidad( nucleo = telepatia))
+		assert.equals([supervelocidad],quicksilver.nucleos())
 	}	
 	
 	test "Ningun mutante puede aprender telepatía"{
@@ -73,4 +106,52 @@ describe "Test para las habilidades que pueden aprender los estudiantes"{
 		assert.notThat(fenix.puedeAprender(telepatia))
 		assert.notThat(iceman.puedeAprender(telepatia))
 	}
+}
+
+// ++++ FACCIONES +++
+
+describe "Test para probar metodos de facciones" {
+
+	 test "El poder total de xforce es 525 " {
+		assert.equals(525, xforce.poderTotal())
+	}
+
+	test "El poder total de xmen" {
+		assert.equals(960, xmen.poderTotal())
+	}
+	
+	test "El metodo agregarMutante agrega en xforce a ciclope" {
+		xforce.agregarMutante(ciclope)
+		assert.that(xforce.mutantes().contains(ciclope))
+	}
+
+	test "El metodo quitarMutante quita en xforce a cable" {
+		assert.notEquals(cable, xforce.mutantes().contains(cable))
+	}
+	
+	test "Los integrantes en comun de la faccion xforce y xmen son: cable y sunstup" {
+		assert.equals(#{"Nathan Summers","Roberto Da Costa"}, xforce.integrantesEnComun(xmen))
+	}
+
+	test "Agregamos una habilidadad de inamovible a cable y comprobamos que el multiplicador sigue siendo 3"{
+		cable.aprenderHabilidad(new Habilidad(nucleo= inamovible))
+		assert.equals(5,xmen.nucleos().size())
+		assert.equals(4,xmen.multiplicador())
+	}
+}
+
+// ++++ ENTRENAMIENTOS +++
+
+describe "Test para probar los metodos de Entrenamientos" {
+
+	 test "El entrenamiento basico de la faccion xforce para la sesion de yoga le da un poder total de 546" {
+	 	yoga.entrenarFaccion(xforce)
+		assert.equals(546, xforce.poderTotal())
+	}
+
+	 test "El entrenamiento completo de la faccion xforce para la sesion de yoga le da un nivel de 12 a la habilidad telequinesis de uno de sus miembros" {
+	 	yoga.entrenarFaccion(xforce)
+		assert.equals([12], cable.habilidades().map{ habilidad => habilidad.nivel()})
+		assert.equals(546, xforce.poderTotal())
+	}	
 }
