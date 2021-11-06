@@ -149,17 +149,13 @@ class EntrenamientoBasico{
 }
 
 class EntrenamientoCompleto inherits EntrenamientoBasico{
-	var property habilidades = []
+	var property nucleos = []
 
 	method entrenarHabilidades(mutante){
-		mutante.habilidades().forEach{ habilidad => if(habilidades.contains(habilidad.nucleo())) habilidad.aumentarNivel(2)}
+		mutante.habilidades().forEach{ habilidad => if(nucleos.contains(habilidad.nucleo())) habilidad.aumentarNivel(2)}
 	}
 	override method entrenarMutante(mutante){
 		super(mutante)
 		self.entrenarHabilidades(mutante)
 	}
 }
-
-
-const fenix = new Mutante(nombre= "Jean Gray", potencial = 40, habilidades = [ new Habilidad( nucleo = telepatia, nivel = 13)])
-
