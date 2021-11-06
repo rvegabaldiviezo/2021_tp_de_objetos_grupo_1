@@ -1,21 +1,27 @@
 /** First Wollok example */
+class UserException inherits Exception { }
 
 class Mutante{
 	const property nombre =""
 	var property potencial = 0
 	const property habilidades = []  
 
-	method incrementaPotencial(valor){ potencial = potencial + valor}
+	method incrementarPotencial(valor){ potencial = potencial + valor}
 	method poderTotal()= potencial + habilidades.sum{habilidad=> habilidad.nucleo().incrementoPotencial(self)}
 
-	method puedeAprender(nucleo)= nucleo.cumpleRequisitos(self)
+	method puedeAprender(nucleo)=nucleo.cumpleRequisitos(self)
 	
 	method tieneHabilidad(nucleo)=self.nucleos().contains(nucleo)
 	
 	method aprenderHabilidad(habilidad){
-		if(self.puedeAprender(habilidad.nucleo()) && not(self.tieneHabilidad(habilidad.nucleo()))){
-			habilidades.add(habilidad)
+		if(!self.puedeAprender(habilidad.nucleo())){
+			throw new UserException(message = "No cumple los requisitos para aprender la habilidad")
 		}
+		if(self.tieneHabilidad(habilidad.nucleo())){
+			throw new UserException(message = "Ya aprendio la habilidad indicada")
+		}
+		
+		habilidades.add(habilidad)
 	}
 	
 	method nucleos()=habilidades.map{habilidad => habilidad.nucleo()}
@@ -135,7 +141,7 @@ class EntrenamientoBasico{
 	var property tiempo
 
 	method entrenarMutante(mutante){ 
-		mutante.incrementaPotencial(tiempo) 
+		mutante.incrementarPotencial(tiempo) 
 	}
 	method entrenarFaccion(faccion){
 		faccion.mutantes().forEach{mutante => self.entrenarMutante(mutante)}
@@ -153,3 +159,7 @@ class EntrenamientoCompleto inherits EntrenamientoBasico{
 		self.entrenarHabilidades(mutante)
 	}
 }
+
+
+const fenix = new Mutante(nombre= "Jean Gray", potencial = 40, habilidades = [ new Habilidad( nucleo = telepatia, nivel = 13)])
+
