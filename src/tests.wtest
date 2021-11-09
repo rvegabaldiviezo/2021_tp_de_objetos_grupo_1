@@ -91,20 +91,11 @@ describe "Test para las habilidades que pueden aprender los estudiantes"{
 	}
 
 	test "Ciclope no puede aprender Explosion optica" {
-		try {
-			ciclope.aprenderHabilidad(new Habilidad(nucleo= explosionOptica))
-		} catch e : UserException {
-			assert.equals([explosionOptica],ciclope.nucleos())
-		}
+		assert.throwsException(ciclope.aprenderHabilidad(new Habilidad(nucleo= explosionOptica)))
 	}
 
 	test "Quicksilver no puede aprender telepatia" {
-		try {
-			quicksilver.aprenderHabilidad(new Habilidad( nucleo = telepatia))
-		} catch e : UserException {
-			assert.equals([supervelocidad],quicksilver.nucleos())
-		}
-		
+		assert.throwsException(quicksilver.aprenderHabilidad(new Habilidad( nucleo = telepatia)))
 	}	
 	
 	test "Ningun mutante puede aprender telepatía"{

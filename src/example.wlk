@@ -1,31 +1,31 @@
 /** First Wollok example */
-class UserException inherits Exception { }
+class NoAprendeHabilidadExeption inherits Exception { }
 
 class Mutante{
-	const property nombre =""
+	const property nombre = ""
 	var property potencial = 0
 	const property habilidades = []  
 
-	method incrementarPotencial(valor){ potencial = potencial + valor}
-	method poderTotal()= potencial + habilidades.sum{habilidad=> habilidad.nucleo().incrementoPotencial(self)}
-
-	method puedeAprender(nucleo)=nucleo.cumpleRequisitos(self)
+	method incrementarPotencial(valor){ potencial += valor}
 	
-	method tieneHabilidad(nucleo)=self.nucleos().contains(nucleo)
+	method incrementoPotencialTotal() = habilidades.sum{ habilidad => habilidad.nucleo().incrementoPotencial(self)}
+
+	method poderTotal()= potencial + self.incrementoPotencialTotal()
+
+	method puedeAprender(habilidad) = habilidad.nucleo().cumpleRequisitos(self)
+	
+	method tieneHabilidad(habilidad) = habilidades.contains(habilidad)
 	
 	method aprenderHabilidad(habilidad){
-		if(!self.puedeAprender(habilidad.nucleo())){
-			throw new UserException(message = "No cumple los requisitos para aprender la habilidad")
+		if( !self.puedeAprender(habilidad)){
+			throw new NoAprendeHabilidadExeption(message = "No cumple los requisitos para aprender la habilidad")
 		}
-		if(self.tieneHabilidad(habilidad.nucleo())){
-			throw new UserException(message = "Ya aprendio la habilidad indicada")
+		if( self.tieneHabilidad(habilidad)){
+			throw new NoAprendeHabilidadExeption(message = "Ya aprendio la habilidad indicada")
 		}
 		
 		habilidades.add(habilidad)
-	}
-	
-	method nucleos()=habilidades.map{habilidad => habilidad.nucleo()}
-	
+	}	
 }
 
 
@@ -34,7 +34,8 @@ class Habilidad{
 	var property nivel = 1
 
 	method aumentarNivel(numero) {nivel = nivel + numero}
- 	override method ==(habilidad)= nucleo == habilidad.nucleo() 
+	
+ 	override method ==(habilidad)= nucleo == habilidad.nucleo()
 }
 
 object explosionOptica{
@@ -110,13 +111,18 @@ object inamovible{
 class Faccion{
 	const property mutantes= [] 
 	
-	method multiplicador()= self.nucleos().asSet().size().min(self.mutantes().size())
-	method nucleos()= self.habilidadesFaccion().map{habilidad => habilidad.nucleo()}
 	method habilidadesFaccion()= (mutantes.map{mutante => mutante.habilidades()}).flatten()
+	
+	method cantidadDeMutantes() = self.mutantes().size() 
+	
+	method cantidadDeHabilidadesDistintas() = self.habilidadesFaccion().asSet().size()	
+	
+	method multiplicador() = (self.cantidadDeMutantes()).min(self.cantidadDeHabilidadesDistintas())
 	
 	method poderTotal()= (mutantes.sum{mutante => mutante.poderTotal()}) * self.multiplicador()
 	
 	method agregarMutante(mutante)= mutantes.add(mutante)
+	
 	method quitarMutante(mutante)= mutantes.remove(mutante)
 	
 	method nombres() = (mutantes.map{mutante => mutante.nombre()}).asSet()
@@ -125,8 +131,8 @@ class Faccion{
 	 
 	method contieneHabilidad(habilidad) = self.habilidadesFaccion().any{ habilidadFaccion => habilidadFaccion == habilidad}
 
-	method puedeAgregarHabilidad(habilidad) = mutantes.any{ mutanteFaccion => 
-		mutanteFaccion.habilidades().any{ habilidadFaccion => 
+	method puedeAgregarHabilidad(habilidad) = mutantes.any{ mutante => 
+		mutante.habilidades().any{ habilidadFaccion => 
 			habilidadFaccion == habilidad and habilidadFaccion.nivel() < habilidad.nivel()			
 		}														
 	}	 
