@@ -135,9 +135,8 @@ class Faccion{
 	method contieneHabilidad(habilidad) = self.habilidadesDistintas().contains(habilidad)
 
 	method puedeAgregarHabilidad(nuevaHabilidad){
-		var habilidadesConNucleosIguales = self.habilidades().filter{ habilidad => habilidad == nuevaHabilidad}
-		var existeUnaHabilidadIgualPeroDeNucleoMenor = habilidadesConNucleosIguales.any{ habilidad => habilidad.nivel() < nuevaHabilidad.nivel()}	
-		return existeUnaHabilidadIgualPeroDeNucleoMenor
+		const habilidadesConNucleosIguales = self.habilidades().filter{ habilidad => habilidad == nuevaHabilidad}
+		return  habilidadesConNucleosIguales.any{ habilidad => habilidad.nivel() < nuevaHabilidad.nivel()}			
 	}	 
 	// pto 7
 	method convieneAgregar(mutante) = mutante.habilidades().any{ habilidad => !self.contieneHabilidad(habilidad) or self.puedeAgregarHabilidad(habilidad)}		
