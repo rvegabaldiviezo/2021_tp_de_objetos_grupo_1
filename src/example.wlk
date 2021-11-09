@@ -8,11 +8,11 @@ class Mutante{
 
 	method incrementarPotencial(valor){ potencial += valor}
 	
-	method incrementoPotencialTotal() = habilidades.sum{ habilidad => habilidad.nucleo().incrementoPotencial(self)}
+	method incrementoPotencialTotal() = habilidades.sum{ habilidad => habilidad.incrementoPotencial(self)}
 
 	method poderTotal()= potencial + self.incrementoPotencialTotal()
 
-	method puedeAprender(habilidad) = habilidad.nucleo().cumpleRequisitos(self)
+	method puedeAprender(habilidad) = habilidad.cumpleRequisitos(self)
 	
 	method tieneHabilidad(habilidad) = habilidades.contains(habilidad)
 	
@@ -36,6 +36,10 @@ class Habilidad{
 	method aumentarNivel(numero) {nivel = nivel + numero}
 	
  	override method ==(habilidad)= nucleo == habilidad.nucleo()
+ 	
+ 	method incrementoPotencial(mutante) = nucleo.incrementarPotencial(mutante)
+	
+	method cumpleRequisitos(mutante) = nucleo.cumpleRequisitos(mutante)  
 }
 
 object explosionOptica{
@@ -109,38 +113,37 @@ object inamovible{
 }
 
 class Faccion{
-	const property mutantes= [] 
+
+	const property mutantes = #{} 
 	
-	method habilidadesFaccion()= (mutantes.map{mutante => mutante.habilidades()}).flatten()
+	// pto 4
+	method agregar(mutante)= mutantes.add(mutante) 
+	method quitar(mutante)= mutantes.remove(mutante) 
+
+	method habilidades() = (mutantes.map{ mutante => mutante.habilidades()}).flatten()
+	method habilidadesDistintas() = self.habilidades().asSet()
+	method poderTotalMutantes() = mutantes.sum{ mutante => mutante.poderTotal()}
+	method multiplicador() = (mutantes.size()).min(self.habilidadesDistintas().size())
+	// pto 5 
+	method poderTotal() = self.multiplicador() * self.poderTotalMutantes()
 	
-	method cantidadDeMutantes() = self.mutantes().size() 
-	
-	method cantidadDeHabilidadesDistintas() = self.habilidadesFaccion().asSet().size()	
-	
-	method multiplicador() = (self.cantidadDeMutantes()).min(self.cantidadDeHabilidadesDistintas())
-	
-	method poderTotal()= (mutantes.sum{mutante => mutante.poderTotal()}) * self.multiplicador()
-	
-	method agregarMutante(mutante)= mutantes.add(mutante)
-	
-	method quitarMutante(mutante)= mutantes.remove(mutante)
-	
-	method nombres() = (mutantes.map{mutante => mutante.nombre()}).asSet()
-	
-	method integrantesEnComun(otraFaccion)= self.nombres().intersection(otraFaccion.nombres())
+	method nombres() = (mutantes.map{ mutante => mutante.nombre()}).asSet()
+	// pto 6
+	method integrantesEnComun(faccion) = self.nombres().intersection(faccion.nombres())
 	 
-	method contieneHabilidad(habilidad) = self.habilidadesFaccion().any{ habilidadFaccion => habilidadFaccion == habilidad}
 
-	method puedeAgregarHabilidad(habilidad) = mutantes.any{ mutante => 
-		mutante.habilidades().any{ habilidadFaccion => 
-			habilidadFaccion == habilidad and habilidadFaccion.nivel() < habilidad.nivel()			
-		}														
+	method contieneHabilidad(habilidad) = self.habilidadesDistintas().contains(habilidad)
+
+	method puedeAgregarHabilidad(nuevaHabilidad){
+		var habilidadesConNucleosIguales = self.habilidades().filter{ habilidad => habilidad == nuevaHabilidad}
+		var existeUnaHabilidadIgualPeroDeNucleoMenor = habilidadesConNucleosIguales.any{ habilidad => habilidad.nivel() < nuevaHabilidad.nivel()}	
+		return existeUnaHabilidadIgualPeroDeNucleoMenor
 	}	 
+	// pto 7
+	method convieneAgregar(mutante) = mutante.habilidades().any{ habilidad => !self.contieneHabilidad(habilidad) or self.puedeAgregarHabilidad(habilidad)}		
 
-	method convieneAgregar(mutante) = mutante.habilidades().any{ habilidad => 
-		not self.contieneHabilidad(habilidad) or self.puedeAgregarHabilidad(habilidad)
-	}
-				
+
+
 }
 
 class EntrenamientoBasico{
