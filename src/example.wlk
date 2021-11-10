@@ -1,6 +1,7 @@
 /** First Wollok example */
 class NoAprendeHabilidadExeption inherits Exception { }
 
+// pto 1
 class Mutante{
 	const property nombre = ""
 	var property potencial = 0
@@ -37,7 +38,7 @@ class Habilidad{
 	
  	override method ==(habilidad)= nucleo == habilidad.nucleo()
  	
- 	method incrementoPotencial(mutante) = nucleo.incrementarPotencial(mutante)
+ 	method incrementoPotencial(mutante) = nucleo.incrementoPotencial(mutante)
 	
 	method cumpleRequisitos(mutante) = nucleo.cumpleRequisitos(mutante)  
 }
@@ -136,21 +137,20 @@ class Faccion{
 
 	method puedeAgregarHabilidad(nuevaHabilidad){
 		const habilidadesConNucleosIguales = self.habilidades().filter{ habilidad => habilidad == nuevaHabilidad}
-		return  habilidadesConNucleosIguales.any{ habilidad => habilidad.nivel() < nuevaHabilidad.nivel()}			
+		return  habilidadesConNucleosIguales.any{ habilidad => habilidad.nivel() < nuevaHabilidad.nivel()}	
 	}	 
 	// pto 7
 	method convieneAgregar(mutante) = mutante.habilidades().any{ habilidad => !self.contieneHabilidad(habilidad) or self.puedeAgregarHabilidad(habilidad)}		
-
-
-
 }
 
 class EntrenamientoBasico{
 	var property tiempo
 
+	// pto 8 
 	method entrenarMutante(mutante){ 
 		mutante.incrementarPotencial(tiempo) 
 	}
+	// pto 9
 	method entrenarFaccion(faccion){
 		faccion.mutantes().forEach{mutante => self.entrenarMutante(mutante)}
 	}

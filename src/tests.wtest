@@ -111,6 +111,8 @@ describe "Test para las habilidades que pueden aprender los estudiantes"{
 
 describe "Test para probar metodos de facciones" {
 
+	// xforce.mutantes(): [cable,domino,sunspot]) 
+	// xforce.habilidades(): [ telequinesis(10), suerte(13), absorcionSolar(8)]
 	 test "El poder total de xforce es 525 " {
 		assert.equals(525, xforce.poderTotal())
 	}
@@ -120,11 +122,12 @@ describe "Test para probar metodos de facciones" {
 	}
 	
 	test "El metodo agregarMutante agrega en xforce a ciclope" {
-		xforce.agregarMutante(ciclope)
+		xforce.agregar(ciclope)
 		assert.that(xforce.mutantes().contains(ciclope))
 	}
 
 	test "El metodo quitarMutante quita en xforce a cable" {
+		xforce.quitar(cable)
 		assert.notEquals(cable, xforce.mutantes().contains(cable))
 	}
 	
