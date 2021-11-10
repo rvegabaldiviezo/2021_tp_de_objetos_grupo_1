@@ -136,10 +136,7 @@ describe "Test para probar metodos de facciones" {
 	}
 
 	test "Agregamos una habilidadad de inamovible a cable y comprobamos que el multiplicador sigue siendo 3"{
-		//xmen.mutantes(): [fenix, iceman, sunspot, cable]
-		// xmen.habilidades(): [ telepatia(13), transformacion(7), absorcionSolar(8), telequinesis(10)]
 		cable.aprenderHabilidad(new Habilidad(nucleo= inamovible))
-		//xmen.habilidades(): [ telepatia(13), transformacion(7), absorcionSolar(8), telequinesis(10), inamovible(1)]
 		assert.equals(5,xmen.habilidadesDistintas().size())
 		assert.equals(4,xmen.multiplicador())
 	}
@@ -149,10 +146,7 @@ describe "Test para probar metodos de facciones" {
 
 describe "Test para probar los metodos de Entrenamientos" {
 	
-	// xforce.mutantes(): [cable,domino,sunspot]) 
-	// xforce.habilidades(): [ telequinesis(10), suerte(13), absorcionSolar(8)]
-	
-	// yoga.nucleos(): [telequinesis,supervelocidad] ; ENTRENAMIENTO_COMPLETO
+
 	 test "El entrenamiento basico de la faccion xforce para la sesion de yoga le da un poder total de 546" {
 	 	yoga.entrenarFaccion(xforce)
 		assert.equals(546, xforce.poderTotal())
