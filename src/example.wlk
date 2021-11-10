@@ -27,6 +27,8 @@ class Mutante{
 		
 		habilidades.add(habilidad)
 	}	
+	
+	method nucleos() = habilidades.map{habilidad => habilidad.nucleo()}
 }
 
 

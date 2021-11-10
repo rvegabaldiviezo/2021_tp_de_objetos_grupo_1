@@ -88,7 +88,7 @@ describe "Test para las habilidades que pueden aprender los estudiantes"{
 
 	test "Iceman puede aprender Transformación y Supervelocidad" {
 		iceman.aprenderHabilidad(new Habilidad( nucleo = supervelocidad))
-		assert.equals([transformacion, supervelocidad],iceman..nucleos())
+		assert.equals([transformacion, supervelocidad],iceman.nucleos())
 	}
 
 	test "Ciclope no puede aprender Explosion optica" {
