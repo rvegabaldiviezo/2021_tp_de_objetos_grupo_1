@@ -28,7 +28,7 @@ const hermandad = new Faccion(mutantes = [magneto, blob, quicksilver]) //[ magne
 
 const xmen = new Faccion( mutantes = [fenix, iceman, sunspot, cable]) // xmen.habilidades(): [ telepatia(13), transformacion(7), absorcionSolar(8), telequinesis(10)]
 
-// pto 9:  Modelar las seciones de Entrenamientos
+// pto 9:  Modelar las sesiones de Entrenamientos
 const yoga = new EntrenamientoCompleto(nucleos=[telequinesis,supervelocidad],tiempo=1)
 const meditacion = new EntrenamientoCompleto(nucleos=[telequinesis, telepatia],tiempo=2)
 
@@ -92,11 +92,13 @@ describe "Test para las habilidades que pueden aprender los estudiantes"{
 	}
 
 	test "Ciclope no puede aprender Explosion optica" {
-		assert.throwsException(ciclope.aprenderHabilidad(new Habilidad(nucleo= explosionOptica)))
+		assert.throwsExceptionWithMessage("Ya aprendio la habilidad indicada",{ciclope.aprenderHabilidad(new Habilidad(nucleo= explosionOptica))})
+		assert.equals([explosionOptica],ciclope.nucleos())
 	}
 
 	test "Quicksilver no puede aprender telepatia" {
-		assert.throwsException(quicksilver.aprenderHabilidad(new Habilidad( nucleo = telepatia)))
+		assert.throwsExceptionWithMessage("No cumple los requisitos para aprender la habilidad",{quicksilver.aprenderHabilidad(new Habilidad( nucleo = telepatia))})
+		assert.equals([supervelocidad],quicksilver.nucleos())
 	}	
 	
 	test "Ningun mutante puede aprender telepatía"{
@@ -111,8 +113,6 @@ describe "Test para las habilidades que pueden aprender los estudiantes"{
 
 describe "Test para probar metodos de facciones" {
 
-	// xforce.mutantes(): [cable,domino,sunspot]) 
-	// xforce.habilidades(): [ telequinesis(10), suerte(13), absorcionSolar(8)]
 	 test "El poder total de xforce es 525 " {
 		assert.equals(525, xforce.poderTotal())
 	}

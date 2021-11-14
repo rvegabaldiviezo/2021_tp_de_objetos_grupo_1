@@ -1,5 +1,4 @@
-/** First Wollok example */
-class NoAprendeHabilidadExeption inherits Exception { }
+class AprenderHabilidadExeption inherits Exception { }
 
 // pto 1
 class Mutante{
@@ -18,11 +17,11 @@ class Mutante{
 	method tieneHabilidad(habilidad) = habilidades.contains(habilidad)
 	
 	method aprenderHabilidad(habilidad){
-		if( !self.puedeAprender(habilidad)){
-			throw new NoAprendeHabilidadExeption(message = "No cumple los requisitos para aprender la habilidad")
-		}
 		if( self.tieneHabilidad(habilidad)){
-			throw new NoAprendeHabilidadExeption(message = "Ya aprendio la habilidad indicada")
+			throw new AprenderHabilidadExeption(message = "Ya aprendio la habilidad indicada")
+		}
+		if( !self.puedeAprender(habilidad)){
+			throw new AprenderHabilidadExeption(message = "No cumple los requisitos para aprender la habilidad")
 		}
 		
 		habilidades.add(habilidad)
@@ -127,10 +126,12 @@ class Faccion{
 	method habilidadesDistintas() = self.habilidades().asSet()
 	method poderTotalMutantes() = mutantes.sum{ mutante => mutante.poderTotal()}
 	method multiplicador() = (mutantes.size()).min(self.habilidadesDistintas().size())
+	
 	// pto 5 
 	method poderTotal() = self.multiplicador() * self.poderTotalMutantes()
 	
 	method nombres() = (mutantes.map{ mutante => mutante.nombre()}).asSet()
+	
 	// pto 6
 	method integrantesEnComun(faccion) = self.nombres().intersection(faccion.nombres())
 	 
@@ -141,6 +142,7 @@ class Faccion{
 		const habilidadesConNucleosIguales = self.habilidades().filter{ habilidad => habilidad == nuevaHabilidad}
 		return  habilidadesConNucleosIguales.any{ habilidad => habilidad.nivel() < nuevaHabilidad.nivel()}	
 	}	 
+	
 	// pto 7
 	method convieneAgregar(mutante) = mutante.habilidades().any{ habilidad => !self.contieneHabilidad(habilidad) or self.puedeAgregarHabilidad(habilidad)}		
 }
@@ -152,6 +154,7 @@ class EntrenamientoBasico{
 	method entrenarMutante(mutante){ 
 		mutante.incrementarPotencial(tiempo) 
 	}
+	
 	// pto 9
 	method entrenarFaccion(faccion){
 		faccion.mutantes().forEach{mutante => self.entrenarMutante(mutante)}
