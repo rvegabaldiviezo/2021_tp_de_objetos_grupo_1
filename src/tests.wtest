@@ -9,6 +9,7 @@ const quicksilver = new Mutante(nombre= "Pietro Maximoff", potencial = 35, habil
 
 const iceman = new Mutante(nombre= "Bobby Drake", potencial = 25, habilidades = [new Habilidad(nucleo=transformacion, nivel=7) ])
 
+// pto 2: Modelar a los siguientes mutantes
 const cable = new Mutante(nombre= "Nathan Summers", potencial=25, habilidades = [new Habilidad(nucleo = telequinesis, nivel = 10)])
 
 const domino = new Mutante(nombre="Neena Thurman" , potencial=25, habilidades = [new Habilidad(nucleo=suerte, nivel=13)])
@@ -20,16 +21,16 @@ const magneto = new Mutante(nombre="Erik Lenhsherr", potencial= 50 , habilidades
 const blob = new Mutante(nombre="Fred Dukes", potencial= 20 , habilidades= [new Habilidad( nucleo = inamovible, nivel = 6)])
 
 
-// Ejemplos de Facciones
+// pto 3: Modelar las facciones
 const xforce = new Faccion(mutantes=[cable,domino,sunspot]) // [ telequinesis(10), suerte(13), absorcionSolar(8)]
 
 const hermandad = new Faccion(mutantes = [magneto, blob, quicksilver]) //[ magnetismo(14), inamovible(6), supervelocidad(9)]
 
-const xmen = new Faccion( mutantes = [fenix, iceman, sunspot, cable]) // [ telepatia(13), transformacion(7), absorcionSolar(8), telequinesis(10)]
+const xmen = new Faccion( mutantes = [fenix, iceman, sunspot, cable]) // xmen.habilidades(): [ telepatia(13), transformacion(7), absorcionSolar(8), telequinesis(10)]
 
-// Ejemplos de sesiones Entrenamientos
-const yoga = new EntrenamientoCompleto(habilidades=[telequinesis,supervelocidad],tiempo=1)
-const meditacion = new EntrenamientoCompleto(habilidades=[telequinesis, telepatia],tiempo=2)
+// pto 9:  Modelar las sesiones de Entrenamientos
+const yoga = new EntrenamientoCompleto(nucleos=[telequinesis,supervelocidad],tiempo=1)
+const meditacion = new EntrenamientoCompleto(nucleos=[telequinesis, telepatia],tiempo=2)
 
 // TEST
 describe "Test para comprobacion de poder total base" {
@@ -91,12 +92,12 @@ describe "Test para las habilidades que pueden aprender los estudiantes"{
 	}
 
 	test "Ciclope no puede aprender Explosion optica" {
-		ciclope.aprenderHabilidad(new Habilidad(nucleo= explosionOptica))
+		assert.throwsExceptionWithMessage("Ya aprendio la habilidad indicada",{ciclope.aprenderHabilidad(new Habilidad(nucleo= explosionOptica))})
 		assert.equals([explosionOptica],ciclope.nucleos())
 	}
 
 	test "Quicksilver no puede aprender telepatia" {
-		quicksilver.aprenderHabilidad(new Habilidad( nucleo = telepatia))
+		assert.throwsExceptionWithMessage("No cumple los requisitos para aprender la habilidad",{quicksilver.aprenderHabilidad(new Habilidad( nucleo = telepatia))})
 		assert.equals([supervelocidad],quicksilver.nucleos())
 	}	
 	
@@ -121,11 +122,12 @@ describe "Test para probar metodos de facciones" {
 	}
 	
 	test "El metodo agregarMutante agrega en xforce a ciclope" {
-		xforce.agregarMutante(ciclope)
+		xforce.agregar(ciclope)
 		assert.that(xforce.mutantes().contains(ciclope))
 	}
 
 	test "El metodo quitarMutante quita en xforce a cable" {
+		xforce.quitar(cable)
 		assert.notEquals(cable, xforce.mutantes().contains(cable))
 	}
 	
@@ -135,7 +137,7 @@ describe "Test para probar metodos de facciones" {
 
 	test "Agregamos una habilidadad de inamovible a cable y comprobamos que el multiplicador sigue siendo 3"{
 		cable.aprenderHabilidad(new Habilidad(nucleo= inamovible))
-		assert.equals(5,xmen.nucleos().size())
+		assert.equals(5,xmen.habilidadesDistintas().size())
 		assert.equals(4,xmen.multiplicador())
 	}
 }
@@ -143,6 +145,7 @@ describe "Test para probar metodos de facciones" {
 // ++++ ENTRENAMIENTOS +++
 
 describe "Test para probar los metodos de Entrenamientos" {
+	
 
 	 test "El entrenamiento basico de la faccion xforce para la sesion de yoga le da un poder total de 546" {
 	 	yoga.entrenarFaccion(xforce)
